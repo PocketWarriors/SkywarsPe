@@ -1,0 +1,118 @@
+name: skywars
+main: Wantedkillers\skywars\Mainskywars
+version: 0.5
+api: [1.0.0]
+load: POSTWORLD
+author: SkywarsPe Team(Wantedkilers,Jon,Praxthisnovcht)
+website: https://github.com/SkywarsPe/SkyblockPe
+commands:
+skywarshowto:
+   description: "gives a brief tutorial on how to play skywars"
+   usage: "/skywarshowto"
+   permission: skywars.howto.play
+skywarshelp:
+   description: "displays a screen of all the Skywars commands"
+   usage: "/skywarshelp"
+   permission: skywars.howto.play
+skpod1:
+   description: "sets the 1st world in witch the players auto spawns"
+   usage: "/skworld"
+   permission: skywars.setspawn.world
+   skywarshelp: 
+   description: "displays a screen on all the skywars commands"
+   usage: "/skywarshelp"
+   permission: skywars.help.page
+   skpod1:
+   description: "sets the 1st position were the player spawns"
+   usage: "/skpod1"
+   permission: skywars.setspawn.pod
+   skpod2:
+   description: "sets the 2nd position were the player spawns"
+   usage: "/skpod2"
+   permission: skywars.setspawn.pod2
+   skpod3:
+   description: "sets the 3rd position were the player spawns
+   usage: "/skpod3"
+   permission: skywars.setspawn.pod1
+   skpod4:
+   description: "sets the 4th position were the player spawns
+   usage: "/skpod4"
+   permission: skywars.setspawn.pod4
+   skpod5:
+   description: "sets the 5th position were the player spawns
+   usage: "/skpod5"
+   permission: skywars.setspawn.pod5
+   skpod6:
+   description: "sets the 6th position were the player spawns
+   usage: "/skpod6"
+   permission: skywars.setspawn.pod6
+   skpod7:
+   description: "sets the 7th position were the player spawns
+   usage: "/skpod1"
+   permission: skywars.setspawn.pod7
+   skpod8:
+   description: "sets the 8th position were the player spawns
+   usage: "/skpod8"
+   permission: skywars.setspawn.pod8
+   skpod9:
+   description: sets the 9th position were the player spawns
+   usage: "/skpod9"
+   permission "Skywars.setspawn.pod9
+   skpod10:
+   description: "sets the 10th position were the player spawns
+   usage: "/skpod10"
+   permission: "Skywars.setspawn.pod10
+permissions: 
+ skywarshelp:
+ default: true
+ description: "display a screen of all the Skywars commands"
+ children: 
+  skywars.setspawn.skworld:
+ default: op
+ description: "sets the world in which the players will spawn in"
+ children: 
+  "skywars.setspawn.skpod1"
+   default: op
+   description: "set a position in which the player will auto spawn"
+children: 
+  "skywars.setspawn.skpod2"
+   default: op
+   description: "set a position in which the player will auto spawn"
+children: 
+  "skywars.setspawn.skpod3"
+   default: op
+   description: "set a position in which the player will auto spawn"
+children: 
+  "skywars.setspawn.skpod4"
+   default: op
+   description: "set a position in which the player will auto spawn"
+children: 
+  "skywars.setspawn.skpod5"
+   default: op
+   description: "set a position in which the player will auto spawn"
+children: 
+  "skywars.setspawn.skpod6"
+   default: op
+   description: "set a position in which the player will auto spawn"
+children: 
+  "skywars.setspawn.skpod7"
+   default: op
+   description: "set a position in which the player will auto spawn"
+children: 
+  "skywars.setspawn.skpod8"
+   default: op
+   description: "set a position in which the player will auto spawn"
+children: 
+  "skywars.setspawn.skpod9"
+   default: op
+   description: "set a position in which the player will auto spawn"
+children: 
+  "skywars.setspawn.skpod10"
+   default: op
+   description: "set a position in which the player will auto spawn"
+children: 
+  skywars.howto.play:
+ default: true
+ description: "Gives a brief tutorial on how to play Skywars "
+
+   
