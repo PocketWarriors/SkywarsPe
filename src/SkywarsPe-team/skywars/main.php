@@ -14,7 +14,7 @@ apiversion=14
 // To do 4: add if an 11th player joins it sends him in spectator mode
 // To do 5: add if 5 players wanna start they use /sktimeskip and the game will begin 10 seconds later
 // To do 6: add that instead of the players having to break the block itl'l auto break whats under them when the time begins :)
-
+// To do 7: add a config seting so everything can be properly saved and edited
 namespace Wantedkillers\skywars;
 use pocketmine\Server;
 use pocketmine\command\Command;
@@ -357,9 +357,9 @@ class skywars implements Plugin{
 				$pk->health = $this->getHealth();
 				$this->dataPacket($pk);
 				if($this->getHealth() <= 0){
-					$this->dead = true;
+				$event->setcancelled(true);
 	    		$target->setGamemode(2);
-			$target->getInventory()->SetItemInHand($item);
+			$target->getInventory()->SetItemInHand($itemid "356");
           $target->sendMessage("[SkyWars] since you have died you have been put in spectator mode");
           $target->sendMessage("[Skywars] Tap anywhere using the clock to go back to main world");
     }
@@ -376,7 +376,6 @@ class skywars implements Plugin{
 				$pk->health = $this->getHealth();
 				$this->dataPacket($pk);
 				if($this->getHealth() <= 0){
-					$this->dead = true;
 		$defaultLevel = $this->server->getDefaultLevel();
 		foreach($this->getPlayers() as $target){
 			if($this === $defaultLevel or $defaultLevel === null){
@@ -419,18 +418,16 @@ class skywars implements Plugin{
 				$pk->health = $this->getHealth();
 				$this->dataPacket($pk);
 				if($this->getHealth() <= 0){
-					$this->dead = true;
             $target = $event->GetTarget();
              $event->setCancelled(true);
               }
        }
  public function renderNameTag($player);
-            $username = $target->getname
+            $username = $target->getname();
 
 				$pk->health = $this->getHealth();
 				$this->dataPacket($pk);
 				if($this->getHealth() <= 0){
-					$this->dead = true;
             $target = $event->GetTarget();
                  $player->setNameTag("[Spectator]"$player->getname().);
                    }
