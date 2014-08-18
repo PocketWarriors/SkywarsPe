@@ -49,11 +49,11 @@ skywarshelp:
    skpod9:
    description: sets the 9th position were the player spawns
    usage: "/skpod9"
-   permission "Skywars.setspawn.pod9
+   permission: skywars.setspawn.pod9
    skpod10:
    description: "sets the 10th position were the player spawns
    usage: "/skpod10"
-   permission: "Skywars.setspawn.pod10
+   permission: skywars.setspawn.pod10
 permissions: 
  skywarshelp:
  default: true
