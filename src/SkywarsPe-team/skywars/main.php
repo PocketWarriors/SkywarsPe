@@ -3,7 +3,7 @@
 /*
 __PocketMine Plugin__
 class=skywars
--name=skywars
+name=skywars
 author=Wantedkillers
 version=0.5
 apiversion=14
