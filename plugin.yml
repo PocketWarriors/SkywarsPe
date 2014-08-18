@@ -14,14 +14,6 @@ skywarshelp:
    description: "displays a screen of all the Skywars commands"
    usage: "/skywarshelp"
    permission: skywars.howto.play
-skpod1:
-   description: "sets the 1st world in witch the players auto spawns"
-   usage: "/skworld"
-   permission: skywars.setspawn.world
-   skywarshelp: 
-   description: "displays a screen on all the skywars commands"
-   usage: "/skywarshelp"
-   permission: skywars.help.page
    skpod1:
    description: "sets the 1st position were the player spawns"
    usage: "/skpod1"
