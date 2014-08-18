@@ -432,10 +432,10 @@ class skywars implements Plugin{
 				if($this->getHealth() <= 0){
 					$this->dead = true;
             $target = $event->GetTarget();
-                 $player->setNameTag(""[Spectator]"$player->getname().");
+                 $player->setNameTag("[Spectator]"$player->getname().);
                    }
                     }else{
                }
-                $player->setNameTag(""[PLAYER]"$player->getname().");
+                $player->setNameTag("[PLAYER]"$player->getname().);
                   }
             }
