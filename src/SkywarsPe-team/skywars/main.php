@@ -10,6 +10,10 @@ apiversion=14
 */
 // To do 1: Make a sign that shows how many people are in that match and tapping it will let u join unless it's full
 // To do 2: Add multiworld support!!!!!!! 3:
+// To do 3: add /sktime so players can see how much time is left until the game begins
+// To do 4: add if an 11th player joins it sends him in spectator mode
+// To do 5: add if 5 players wanna start they use /sktimeskip and the game will begin 10 seconds later
+// To do 6: add that instead of the players having to break the block itl'l auto break whats under them when the time begins :)
 
 namespace Wantedkillers\skywars;
 use pocketmine\Server;
