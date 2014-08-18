@@ -1,5 +1,5 @@
 name: skywars
-main: Wantedkillers\skywars\Mainskywars
+main: SkywarsPe-team/skywars/main
 version: 0.5
 api: [1.0.0]
 load: POSTWORLD
