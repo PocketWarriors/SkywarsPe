@@ -25,7 +25,7 @@ skywarshelp:
    skpod3:
    description: "sets the 3rd position were the player spawns
    usage: "/skpod3"
-   permission: skywars.setspawn.pod1
+   permission: skywars.setspawn.pod3
    skpod4:
    description: "sets the 4th position were the player spawns
    usage: "/skpod4"
