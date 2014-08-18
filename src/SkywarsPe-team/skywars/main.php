@@ -36,7 +36,6 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
 use pocketmine\scheduler\PluginTask;
 
-private $item = $id 347;
 private $p = 1;
 private $skpod1 = $c1;
 private $skpod2 = $c2;
@@ -49,8 +48,8 @@ private $skpod8 = $c8;
 private $skpod9 = $c9;
 private $skpod10 = $c10;
 private $aworld  = $world;
-private $bworld = $world2;
-private $cworld = $world3;
+//private $bworld = $world2;
+//private $cworld = $world3;
 
 class skywars implements Plugin{
 
