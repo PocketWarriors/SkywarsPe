@@ -139,8 +139,8 @@ class skywars implements Plugin{
         switch(get_class($event)){
             case "GameStartEvent":
         if ($event->getTarget() === $this->aworld) {
-        if ($event->getTarget() === $this->bworld) {
-        if ($event->getTarget() === $this->cworld) {
+      //  if ($event->getTarget() === $this->bworld) {
+       // if ($event->getTarget() === $this->cworld) {
             if ($player = $this->bypass) {
                 $sender->sendMessage("[SkywarsBypass] You have bypassed the auto Skywars spawn");
                 break;
@@ -332,8 +332,8 @@ class skywars implements Plugin{
   public function gameend(Event $event){
             case "GameEndEvent":
         if ($event->getTarget() === $this->aworld) {
-  or if ($event->getTarget() === $this->bworld) {
-  or if ($event->getTarget() === $this->cworld) {
+ //or if ($event->getTarget() === $this->bworld) {
+ // or if ($event->getTarget() === $this->cworld) {
             $player = $event->getEntity();
             if ($player = $this->bypass) {
                 $sender->sendMessage("[SkywarsBypass] You have bypassed the auto Skywars spawn");
@@ -346,8 +346,8 @@ class skywars implements Plugin{
  public function deathevent(PlayerDeathEvent $event){
             case "player.death":
         if ($event->getTarget() === $this->aworld) {
-  or if ($event->getTarget() === $this->bworld) {
-  or if ($event->getTarget() === $this->cworld) {
+  //or if ($event->getTarget() === $this->bworld) {
+  //or if ($event->getTarget() === $this->cworld) {
             $player = $event->getEntity();
             if ($player = $this->bypass) {
                 $sender->sendMessage("[SkywarsBypass] You have bypassed skywars");   
