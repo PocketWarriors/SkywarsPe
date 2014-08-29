@@ -52,7 +52,7 @@ permissions:
   skywarshelp:
     description: "display a screen of all the Skywars commands"
     default: true
-  skywars.command.howto:
+  skywars.command.howto.play:
     description: "display a screen of all the Skywars commands"
     default: true
     children:
