@@ -77,7 +77,7 @@ class SkyWars extends PluginBase implements Listener{
 			case "skywarshowto":
         			if($sender->hasPermission("skywars.command.howto") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")) {
 					$sender->sendMessage("----How To Play skywars----");
-					$seneder->sendMessage("/sk play = start a game");
+					$sender->sendMessage("/sk play = start a game");
 					$sender->sendMessage("/sk exit = exit from a game");
 					$sender->sendMessage("/sk stat [player] = get a player stats");
 					return true;
@@ -187,7 +187,7 @@ class SkyWars extends PluginBase implements Listener{
                      $sender->sendmessage("please wait until the game begins")
                       break;
 
-    public function eeventHandler(PlayerInteractEvent $event){
+    public function eventHandler(PlayerInteractEvent $event){
         switch(get_class($event)){
             case "BlockBreakEvent":
             case "BlockPlaceEvent":
@@ -199,7 +199,7 @@ class SkyWars extends PluginBase implements Listener{
             $player = $event->getEntity();
             if($player = $this->bypass) {
                 $sender->sendMessage("[SkywarsBypass] You have bypassed the auto Skywars spawn");
-        $this->api->schedule(12000, array($this, "eeventHandler"), array("item 0", "item 1"), false);
+        $this->api->schedule(12000, array($this, "eventHandler"), array("item 0", "item 1"), false);
                   if($task->isfinished);
                     $event->setCancelled(false);
                     $this->server->broadcastMessage("The games have begun go go go!!!!");
@@ -217,12 +217,12 @@ class SkyWars extends PluginBase implements Listener{
                 $this->api->get->schedule(29000, array($this, "gameend"), array("item 2"), false);
                   if($task->isfinished);
                  $this->server->broadcastMessage("The game is over thank you for playing Wantedkillers' skywars plugin");
-                   $this->api->get->schedule(12000, array($this "eeventhandler"), array("item 0" , "item 1"), false);
+                   $this->api->get->schedule(12000, array($this "eventhandler"), array("item 0" , "item 1"), false);
                    $this->api->start($task); 
     public function gamestart(Event $event){
         switch(get_class($event)){
             case "GameStartBEvent":
-                $this->api->get->schedule(12000, array($this "eeventhandler"), array("item 0" , "item 1"), false);
+                $this->api->get->schedule(12000, array($this "eventhandler"), array("item 0" , "item 1"), false);
                   if($task->isfinished);
                 $this->api->get->schedule(29000, array($this, "gameend"), array("item 2"), false);
                    $this->api->start($task); 
@@ -243,7 +243,7 @@ class SkyWars extends PluginBase implements Listener{
                       //  $sender->sendMessage("/skworld3 (The third world that teleports the players to the positions)");
                         $sender->sendMessage("/skpod1");
                         $sender->sendMessage("/skpod2");
-                        $sender->sendMessage("/skpod 3");
+                        $sender->sendMessage("/skpod3");
                         $sender->sendMessage("/skpod4");
                         $sender->sendMessage("/skpod5");
                         $sender->sendMessage("/skpod6");
