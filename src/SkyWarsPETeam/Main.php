@@ -1,13 +1,5 @@
 <?php
 
-/*
-__PocketMine Plugin__
-class=skywars
-name=skywars
-author=Wantedkillers
-version=0.5
-apiversion=14
-*/
 // To do 1: Make a sign that shows how many people are in that match and tapping it will let u join unless it's full
 // To do 2: Add multiworld support!!!!!!! 3:
 // To do 3: add /sktime so players can see how much time is left until the game begins
@@ -18,7 +10,7 @@ apiversion=14
 
 /*Commands: /skhowto */
 
-namespace SkywarsPeTeam\skywars; //need to change the directory name
+namespace SkyWars;
 
 use pocketmine\Server;
 use pocketmine\command\Command;
@@ -62,7 +54,7 @@ class SkyWars extends PluginBase implements Listener{
 
 	public function onEnable(){
 		$this->getServer()->getPluginManager->registerEvents($this, $this);
-        	$this->getLogger()->info(TextFormat::DARK_RED . "SKY" . TextFormat::DARK_BLUE . "WARS" . TextFormat::AQUA . "plugin by SkyWarsTeam is Loading...");
+        	$this->getLogger()->info(TextFormat::DARK_RED . "SKY" . TextFormat::DARK_BLUE . "WARS" . TextFormat::AQUA . "plugin by SkyWarsPETeam is Loading...");
         	$this->getServer()->getSchedule()->scheduleRepeatingTask(new Timer($this), 1200); //this runs every second, but maybe will change in every minute
         	//TODO: create a class for the timer
 	}
@@ -139,7 +131,7 @@ class SkyWars extends PluginBase implements Listener{
 	}
 	
 	public function onPlayerInteract(PlayerInteractEvent $event){
-		$ID = $event->getBlock()->getID(); //not sure on this
+		$ID = $event->getBlock()->getID();
 		//TODO sign system
 	}
         	
