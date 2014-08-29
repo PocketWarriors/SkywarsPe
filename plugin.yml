@@ -25,11 +25,11 @@ commands:
    usage: "/skpod2"
    permission: skywars.setspawn.pod2
   skpod3:
-   description: "sets the 3rd position were the player spawns
+   description: "sets the 3rd position were the player spawns"
    usage: "/skpod3"
    permission: skywars.setspawn.pod3
   skpod4:
-   description: "sets the 4th position were the player spawns
+   description: "sets the 4th position were the player spawns"
    usage: "/skpod4"
    permission: skywars.setspawn.pod4
   skpod5:
@@ -41,11 +41,11 @@ commands:
    usage: "/skpod2"
    permission: skywars.setspawn.pod6
   skpod7:
-   description: "sets the 3rd position were the player spawns
+   description: "sets the 3rd position were the player spawns"
    usage: "/skpod7"
    permission: skywars.setspawn.pod7
   skpod8:
-   description: "sets the 4th position were the player spawns
+   description: "sets the 4th position were the player spawns"
    usage: "/skpod8"
    permission: skywars.setspawn.pod8
 permissions:
