@@ -122,11 +122,19 @@ class SkyWars extends PluginBase implements Listener{
 			if(count($this->getServer()->getLevel($this->aworld)->getPlayers()) => $this->neededplayers){
 				$event->setCancelled(true);
 				$p->sendMessage("The game is full");
-			}else{
+			}elseif(count($this->getServer()->getLevel($this->config->get('aworld'))->getPlayers()) == $this->neededplayers){
 				$n = count($this->getServer()->getLevel($thisconfig->get('aworld'))->getPlayers());
 				$spawn = $this->->config->get('spawns'[$n]); //no need to do + 1 on this, because arrays start counting form 0
 				$p->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->config->get('aworld'));
-			}
+                                $this->startGame($this->config->get('aworld'));
+                        }elseif(count($this->getServer()->getLevel($this->config->get('aworld'))->getPlayers()) < $this->neededplayers){
+                                $n = count($this->getServer()->getLevel($this->config->get('aworld'))->getPlayers());
+				$spawn = $this->->config->get('spawns'[$n]); //no need to do + 1 on this, because arrays start counting form 0
+				$p->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->config->get('aworld'));
+      
+			}elseif($this->gamestarted == true){
+                                $p->sendMessage("The game is already started");
+                        }
 			//TODO: count if there are enough player to start a game
 		}else{
 			return;
