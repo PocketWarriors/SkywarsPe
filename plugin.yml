@@ -55,7 +55,7 @@ permissions:
   skywars.command.howto:
     description: "display a screen of all the Skywars commands"
     default: true
-	children:
+    children:
      skywars.command:
       description: "display a screen of all the Skywars commands"
       default: true
