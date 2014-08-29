@@ -59,6 +59,9 @@ permissions:
      skywars.command:
       description: "display a screen of all the Skywars commands"
       default: true
+     skywars.command.pos:
+      description: "display a screen of all the Skywars commands"
+      default: true
      skywars:
       description: "display a screen of all the Skywars commands"
       default: true
