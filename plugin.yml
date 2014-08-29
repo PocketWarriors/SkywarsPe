@@ -65,7 +65,7 @@ permissions:
   skywars.editlobby:
     description: "edit the lobby"
     default: op
-  skywars.setspawn.skworld:
+  skywars.setspawn.world:
     description: "sets the world in which the players will spawn in"
     default: op
   skywars.setspawn.skpod1:
