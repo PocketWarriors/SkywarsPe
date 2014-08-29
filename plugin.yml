@@ -19,7 +19,7 @@ commands:
   skpod1:
    description: "sets the 1st position were the player spawns"
    usage: "/skpod1"
-   permission: skywars.setspawn.pod
+   permission: skywars.setspawn.pod1
   skpod2:
    description: "sets the 2nd position were the player spawns"
    usage: "/skpod2"
