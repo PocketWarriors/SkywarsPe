@@ -31,24 +31,8 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
 use pocketmine\scheduler\PluginTask;
 
-private spawnlocs = array(
-array($skpod1),
-array($skpod2),
-array($skpod4),
-array($skpod6),		//TODO get these coords from a config (more user-friendly)
-array($skpod7),
-array($skpod8),
-array($skpod9,
-array($skpod10)
-);
-private $lobbyworld;
-private $aworld  = $world;
-//private $bworld = $world2;
-//private $cworld = $world3;
-
-private $neededplayers = 8;
-
-private $skywarsstarted = false;
+public $skywarsstarted = false;
+public $config;
 
 class SkyWars extends PluginBase implements Listener{
 
@@ -57,10 +41,35 @@ class SkyWars extends PluginBase implements Listener{
         	$this->getLogger()->info(TextFormat::DARK_RED . "SKY" . TextFormat::DARK_BLUE . "WARS" . TextFormat::AQUA . "plugin by SkyWarsPETeam is Loading...");
         	$this->getServer()->getSchedule()->scheduleRepeatingTask(new Timer($this), 1200); //this runs every second, but maybe will change in every minute
         	//TODO: create a class for the timer
+        	$this->config = new Config($this->getDataFolder()."config.yml", Config::YAML, array(
+                "lobby" => 'world',
+                "aworld" => 'swaworld',
+                "neededplayers" => '3', //this is just for test
+                "spawns" => array(
+                    	array(
+                        	272,
+                        	0,
+                        	1
+                    	),
+                	array(
+                		260,
+                        	0,
+                        	5
+                    	),
+			array(
+                        	260,
+                        	0,
+                        	5
+                    )
+                )
+            	));
+            	$this->config->save();
+            
 	}
 
 	public function onDisable(){
-        	$this->getLogger()->info(TextFormat::GOLD . "Skywars plugin by SkyWarsTeam is disabling...");
+        	$this->getLogger()->info(TextFormat::GOLD . "Skywars plugin by SkyWarsPETeam is disabling...");
+        	$this->config->save();
         }
 	
 	public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
@@ -84,6 +93,14 @@ class SkyWars extends PluginBase implements Listener{
 						//TODO
 					case "stat":
 						//TODO
+					case "spawnpos":
+						if($sender->hasPermission("skywars.command.pos") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
+							$x = $sender->getX();
+							$y = $sender->getY();
+							$z = $sender->getZ();
+							$this->config->set('spawns', array($x, $y, $z));
+							$sender->sendMessage("Spawn position set to: ".$x.", ".$y.", ".$z.", level: ".$sender->getLevel());
+						}
 				}
 			//TODO setpos and setworld and setlobby
 		}
@@ -106,9 +123,9 @@ class SkyWars extends PluginBase implements Listener{
 				$event->setCancelled(true);
 				$p->sendMessage("The game is full");
 			}else{
-				$players = count($this->getServer()->getLevel($this->aworld)->getPlayers());
-				$spawn = $this->spawnlocs[$players]; //no need to do + 1 on this, because arrays start counting form 0
-				$p->teleport($spawn, $this->aworld);
+				$n = count($this->getServer()->getLevel($thisconfig->get('aworld'))->getPlayers());
+				$spawn = $this->->config->get('spawns'[$n]); //no need to do + 1 on this, because arrays start counting form 0
+				$p->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->config->get('aworld'));
 			}
 			//TODO: count if there are enough player to start a game
 		}else{
@@ -117,14 +134,14 @@ class SkyWars extends PluginBase implements Listener{
 	}
 	
 	public function onBlockBreak(BlockBreakEvent $event){
-		if($event->getPlayer->getLevel() == $this->lobbyworld and !$event->getPlayer->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){
+		if($event->getPlayer->getLevel() == $this->config->get('lobby') and !$event->getPlayer->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){
 			$event->setCancelled(true);
 			$event->getPlayer()->sendMessage("You don't have permission to edit the lobby.");
 		}
 	}
 	
 	public function onBlockPlace(BlockPlaceEvent $event){
-		if($event->getPlayer->getLevel() == $this->lobbyworld and !$event->getPlayer->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){
+		if($event->getPlayer->getLevel() == $this->config->get('lobby') and !$event->getPlayer->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){
 			$event->setCancelled(true);
 			$event->getPlayer()->sendMessage("You don't have permission to edit the lobby.");
 		}
@@ -136,19 +153,19 @@ class SkyWars extends PluginBase implements Listener{
 	}
         	
         public function onHurt(EntityDamageByEntityEvent $event){
-        	if($event->getEntity()->getLevel() == $this->lobbyworld){
+        	if($event->getEntity()->getLevel() == $this->config->get('lobby')){
         		$event->setCancelled(true);
         		$event->getEntity()->sendMessage("You cannot hurt players in the lobby.");
         	}
         }
         
         public  function onDeath(EntityDeathEvent $event){
-        	if($event->getEntity()->getLevel() == $this->aworld){
-        		if(count($this->getServer->getLevel($this->aworld)->getPlayers()) <= 1){
+        	if($event->getEntity()->getLevel() == $this->config->get('aworld')){
+        		if(count($this->getServer->getLevel($this->config->get('aworld'))->getPlayers()) <= 1){
         			foreach($this->getServer->getLevel($this->aworld)->getPlayers() as $p){
         				$p->sendMessage("You won the match!");
         				$p->sendMessage("The game has finished, you will be teleported to the lobby.");
-        				$p->teleport($this->getServer()->getLevel($this->aworld)->getSafeSpawn());
+        				$p->teleport($this->getServer()->getLevel($this->config->get('lobby'))->getSafeSpawn());
         				//TODO add points system
         			}
         		}
