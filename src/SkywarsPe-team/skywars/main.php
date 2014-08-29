@@ -15,97 +15,157 @@ apiversion=14
 // To do 5: add if 5 players wanna start they use /sktimeskip and the game will begin 10 seconds later
 // To do 6: add that instead of the players having to break the block itl'l auto break whats under them when the time begins :)
 // To do 7: add a config seting so everything can be properly saved and edited
-namespace Wantedkillers\skywars;
-use pocketmine\Server;
-use pocketmine\command\Command;
-use pocketmine\command\CommandExecutor;
-use pocketmine\command\CommandSender;
-use pocketmine\command\PluginCommand;
+
+/*Commands: /skhowto */
+
+namespace SkywarsPeTeam\skywars; //need to change the directory name
+
+use pocketmine\Server;
+use pocketmine\command\Command;
+use pocketmine\command\CommandExecutor;
+use pocketmine\command\CommandSender;
+use pocketmine\command\PluginCommand;
 use pocketmine\player;
 use pocketmine\item\Item;
-use pocketmine\event\Event;
+use pocketmine\event\Event;
 use pocketmine\event\playerInteractEvent
 use pocketmine\event\PlayerDeathEvent;
-use pocketmine\event\
 use pocketmine\event\EntityLevelChangeEvent;
-use pocketmine\event\EventExecutor;
-use pocketmine\event\EventPriority;
-use pocketmine\event\Listener;
-use pocketmine\plugin\Plugin;
-use pocketmine\plugin\PluginBase;
-use pocketmine\utils\TextFormat;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\event\EventExecutor;
+use pocketmine\event\EventPriority;
+use pocketmine\event\Listener;
+use pocketmine\plugin\Plugin;
+use pocketmine\plugin\PluginBase;
+use pocketmine\utils\TextFormat;
+use pocketmine\scheduler\PluginTask;
 
-private $p = 1;
-private $skpod1 = $c1;
-private $skpod2 = $c2;
-private $skpod3 = $c3;
-private $skpod4 = $c4;
-private $skpod5 = $c5;
-private $skpod6 = $c6;
-private $skpod7 = $c7;
-private $skpod8 = $c8;
-private $skpod9 = $c9;
-private $skpod10 = $c10;
+private spawnlocs = array(
+array($skpod1),
+array($skpod2),
+array($skpod4),
+array($skpod6),		//TODO get these coords from a config (more user-friendly)
+array($skpod7),
+array($skpod8),
+array($skpod9,
+array($skpod10)
+);
+private $lobbyworld;
 private $aworld  = $world;
 //private $bworld = $world2;
 //private $cworld = $world3;
 
-class skywars implements Plugin{
+private $neededplayers = 8;
 
-    public function __construct(ServerAPI $api, $server = false){
-        $this->api = $api;
-    public function onLoad(){
-    }
+private $skywarsstarted = false;
 
-     public function onEnable(){
-     $this->getLogger()->info(TextFormat::DARK_RED . "SKY" . TextFormat::DARK_BLUE . "WARS" . TextFormat::AQUA . "plugin by Wantedkillers is Loading...");
+class SkyWars extends PluginBase implements Listener{
 
-    public function init(){
-        $this->api->addHandler("player.block.touch", array($this, "eventHandler"), 10);
-        $this->api->addHandler("player.block.touch", array($this, "eeventHandler"), 10);
-        $this->api->addHandler("player.block.touch", array($this, "deadclockevent"), 10);
-        $this->getServer()->getPluginManager()->registerEvent("pocketmine\\event\\BlockBreakEvent", $this, EventPriority::HIGH, new MyEventExecutor(array($this, "eventHandler")), $this, false);
-        $this->getServer()->getPluginManager()->registerEvent("pocketmine\\event\\BlockPlaceEvent", $this, EventPriority::HIGH, new MyEventExecutor(array($this, "eventHandler")), $this, false);
-        $this->getServer()->getPluginManager()->registerEvent("pocketmine\\event\\BlockBreakEvent", $this, EventPriority::HIGH, new MyEventExecutor(array($this, "eeventHandler")), $this, false);
-        $this->getServer()->getPluginManager()->registerEvent("pocketmine\\event\\BlockPlaceEvent", $this, EventPriority::HIGH, new MyEventExecutor(array($this, "eeventHandler")), $this, false);
-   $this->api->addhandler("entity.level.change" , array($this, "playerjoin"), 10););
-// $this->api->addhandler("tile.level.change" , array($this, "worldSign"), 10););
-   $this->api->addhandler("player.death" , array($this, "deadevent"), 10;);
-   $this->getServer()->getPluginManager()->registerEvent("pocketmine\\event\\EntityLevelChangeEvent", $this, EventPriority::HIGH, new MyEventExecutor(array($this, "playerjoin")), $this, false);
-   $this->api->addhandler("player.chat" , array($this, "onPlayerChat"), 10;);
-   $this->getServer()->getPluginManager()->registerEvent("pocketmine\\event\\onPlayerChatEvent", $this, EventPriority::HIGH, new MyEventExecutor(array($this, "onPlayerChat")), $this, false);
-   $this->getServer()->getPluginManager()->registerEvent("pocketmine\\event\\PlayerDeathEvent", $this, EventPriority::HIGH, new MyEventExecutor(array($this, "deadevent")), $this, false);  
-        $this->api->console->register("skywarshowto", "displays a help screen on how to play", array($this, "commandHandler"));
-        $command = new PluginCommand("skywarhowto", $this);
-        $command->setDescription(" displays a help screen on how to play sky wars" );
-        $this->api->console->alias("skhowto", "skywarshowto");
-        $this->api->console->alias("skht", "skywarshowto");
-        $this->api->console->alias("skhelp", "skywarshelp");
-        $this->api->console->alias("skh", "skywarshelp");
-        $command->setAliases(array("skhelp", "skh"));
-        $this->api->schedule(12000, array($this, "eeventHandler"), array("item 0", "item 1"), false);
-        $this->api->schedule(29000, array($this, "gameend"), array("item 2"), false);
-        $this->getServer()->getScheduler()->scheduleDelayedTask(
-                new MyCallbackPluginTask(array($this, "eeventHandler"), array("item 0", "item 1"), $this), 12000);
-        $this->getServer()->getScheduler()->scheduleDelayedTask(
-                new MyCallbackPluginTask(array($this, "gameend"), array("item 2"), $this), 29000);
-    {
-    public function __destruct(){
-    public function onDisable(){
-   $this->getLogger()->info(TextFormat::GOLD . "Skywars plugin by Wantedkillers is disabling...");
-    }
-    public function commandHandler($cmd, $params, $issuer, $alias){
-        switch($cmd){
-    public function onCommand(CommandSender $issuer, Command $cmd, $label, array $args){
-        switch($cmd->getName()){
-            case "skywarshowto":
-              if($event->getPlayer()->hasPermission("skywarshowto") | |
-                $event->getPlayer()->hasPermission("skywars.howto.play") }  {
-                $sender->sendMessage("----How To Play skywars----");
-        }
-    }
-    public function eventHandler(PlayerInteractevent $event){
+	public function onEnable(){
+		$this->getServer()->getPluginManager->registerEvents($this, $this);
+        	$this->getLogger()->info(TextFormat::DARK_RED . "SKY" . TextFormat::DARK_BLUE . "WARS" . TextFormat::AQUA . "plugin by SkyWarsTeam is Loading...");
+        	$this->getServer()->getSchedule()->scheduleRepeatingTask(new Timer($this), 1200); //this runs every second, but maybe will change in every minute
+        	//TODO: create a class for the timer
+	}
+
+	public function onDisable(){
+        	$this->getLogger()->info(TextFormat::GOLD . "Skywars plugin by SkyWarsTeam is disabling...");
+        }
+	
+	public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
+		switch($cmd->getName()){
+			case "skywarshowto":
+        			if($sender->hasPermission("skywars.command.howto") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")) {
+					$sender->sendMessage("----How To Play skywars----");
+					$seneder->sendMessage("/sk play = start a game");
+					$sender->sendMessage("/sk exit = exit from a game");
+					$sender->sendMessage("/sk stat [player] = get a player stats");
+					return true;
+        			}else{
+        				$sender->sendMessage("You don't have permissino to run this command");
+        			}
+			case "skywars" //will set aliases later in plugin.yml
+				$params = array_shift($args[0]);
+				switch($params){
+					case "play":
+						//TODO
+					case "exit":
+						//TODO
+					case "stat":
+						//TODO
+				}
+			//TODO setpos and setworld and setlobby
+		}
+	}
+	
+	public function startGame($level){
+		$this->skywarsstarted == true;
+		foreach($this->getServer()->getLevel($level)->getPlayers() as $p){
+			$x = $p->getGroundX;
+			$y = $p->getGroundY;
+			$z = $p->getGroundZ;
+			//TODO set an air block at $x, $y, $z, to automatically break the block under the player when the game start
+		}
+	}
+	
+	public function onLevelChange(EntityLevelChangeEvent $event){
+		$p = $event->getEntity();
+		if($event->getTarget() == $this->aworld){ // a world
+			if(count($this->getServer()->getLevel($this->aworld)->getPlayers()) => $this->neededplayers){
+				$event->setCancelled(true);
+				$p->sendMessage("The game is full");
+			}else{
+				$players = count($this->getServer()->getLevel($this->aworld)->getPlayers());
+				$spawn = $this->spawnlocs[$players]; //no need to do + 1 on this, because arrays start counting form 0
+				$p->teleport($spawn, $this->aworld);
+			}
+			//TODO: count if there are enough player to start a game
+		}else{
+			return;
+		}
+	}
+	
+	public function onBlockBreak(BlockBreakEvent $event){
+		if($event->getPlayer->getLevel() == $this->lobbyworld and !$event->getPlayer->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){
+			$event->setCancelled(true);
+			$event->getPlayer()->sendMessage("You don't have permission to edit the lobby.");
+		}
+	}
+	
+	public function onBlockPlace(BlockPlaceEvent $event){
+		if($event->getPlayer->getLevel() == $this->lobbyworld and !$event->getPlayer->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){
+			$event->setCancelled(true);
+			$event->getPlayer()->sendMessage("You don't have permission to edit the lobby.");
+		}
+	}
+	
+	public function onPlayerInteract(PlayerInteractEvent $event){
+		$ID = $event->getBlock()->getID(); //not sure on this
+		//TODO sign system
+	}
+        	
+        public function onHurt(EntityDamageByEntityEvent $event){
+        	if($event->getEntity()->getLevel() == $this->lobbyworld){
+        		$event->setCancelled(true);
+        		$event->getEntity()->sendMessage("You cannot hurt players in the lobby.");
+        	}
+        }
+        
+        public  function onDeath(EntityDeathEvent $event){
+        	if($event->getEntity()->getLevel() == $this->aworld){
+        		if(count($this->getServer->getLevel($this->aworld)->getPlayers()) <= 1){
+        			foreach($this->getServer->getLevel($this->aworld)->getPlayers() as $p){
+        				$p->sendMessage("You won the match!");
+        				$p->sendMessage("The game has finished, you will be teleported to the lobby.");
+        				$p->teleport($this->getServer()->getLevel($this->aworld)->getSafeSpawn());
+        				//TODO add points system
+        			}
+        		}
+        	}
+        }
+}
+
+
+/*    public function eventHandler(PlayerInteractevent $event){
         switch($event){
             case "player.block.touch":
         if($event->getTarget() === $this->aworld) {
@@ -435,3 +495,4 @@ class skywars implements Plugin{
                 $player->setNameTag("[PLAYER]"$player->getname().);
                   }
             }
+*/
