@@ -1,10 +1,10 @@
-name: skywars
-main: SkywarsPe-team/skywars/main
-version: 0.5
+name: SkyWars
+main: SkyWarsPETeam/Main
+version: 1.0.0beta
 api: [1.0.0]
 load: POSTWORLD
-author: SkywarsPe Team(Wantedkilers,Jon,Praxthisnovcht)
-website: https://github.com/SkywarsPe/SkyblockPe
+authors: [luca28pet, WantedKillers, Jon]
+website: https://github.com/SkywarsPe/SkywarsPe
 commands:
 skywarshowto:
    description: "gives a brief tutorial on how to play skywars"
@@ -14,25 +14,25 @@ skywarshelp:
    description: "displays a screen of all the Skywars commands"
    usage: "/skywarshelp"
    permission: skywars.howto.play
-   skpod1:
+skpod1:
    description: "sets the 1st position were the player spawns"
    usage: "/skpod1"
    permission: skywars.setspawn.pod
-   skpod2:
+skpod2:
    description: "sets the 2nd position were the player spawns"
    usage: "/skpod2"
    permission: skywars.setspawn.pod2
-   skpod3:
+skpod3:
    description: "sets the 3rd position were the player spawns
    usage: "/skpod3"
    permission: skywars.setspawn.pod3
-   skpod4:
+skpod4:
    description: "sets the 4th position were the player spawns
    usage: "/skpod4"
    permission: skywars.setspawn.pod4
    skpod5:
    description: "sets the 5th position were the player spawns
-   usage: "/skpod5"
+usage: "/skpod5"
    permission: skywars.setspawn.pod5
    skpod6:
    description: "sets the 6th position were the player spawns
