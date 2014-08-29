@@ -62,7 +62,7 @@ permissions:
      skywars:
       description: "display a screen of all the Skywars commands"
       default: true
-  skywars.editlobby::
+  skywars.editlobby:
     description: "edit the lobby"
     default: op
   skywars.setspawn.skworld:
