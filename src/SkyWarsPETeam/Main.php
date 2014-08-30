@@ -228,6 +228,13 @@ class SkyWars extends PluginBase implements Listener{
         	}
         }
         
+        public function onChat(PlayerChatEvent $event){
+        	$user = event->getPlayer->getName();
+        	if($this->config->get('chat-format') == true){
+        		$event->setformat("[".$this->points->get($user2])."]<".$user.">: ".$event->getMessage());
+        	}
+        }
+        
         /*Defining my function to start the game*/
 	public function startGame($level){
 		$this->skywarsstarted == true //put the array to true
