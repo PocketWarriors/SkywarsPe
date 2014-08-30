@@ -5,8 +5,10 @@
 // To do 3: add /sktime so players can see how much time is left until the game begins
 // To do 4: add if an 11th player joins it sends him in spectator mode
 // To do 5: add if 5 players wanna start they use /sktimeskip and the game will begin 10 seconds later
+
 // To do 6: add that instead of the players having to break the block itl'l auto break whats under them when the time begins :)
-// To do 7: add a config seting so everything can be properly saved and edited
+// To do 7: add a config seting so everything can be properly saved and edited☆ done
+
 
 /*Commands: /skhowto */
 
@@ -44,7 +46,7 @@ class SkyWars extends PluginBase implements Listener{
         	$this->config = new Config($this->getDataFolder()."config.yml", Config::YAML, array(
                 "lobby" => 'world',
                 "aworld" => 'swaworld',
-                "neededplayers" => '3', //this is just for test
+                "neededplayers" => '6' //this is just for test
                 "spawns" => array(
                     	array(
                         	272,
@@ -52,7 +54,8 @@ class SkyWars extends PluginBase implements Listener{
                         	1
                     	),
                 	array(
-                		260,
+                		2
+                		60,
                         	0,
                         	5
                     	),
