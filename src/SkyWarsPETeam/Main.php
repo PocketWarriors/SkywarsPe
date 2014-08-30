@@ -35,6 +35,9 @@ use pocketmine\scheduler\PluginTask;
 
 public $skywarsstarted = false;
 public $config;
+public $aplayers;
+//public $bplayers;
+//public $cplayers;
 
 class SkyWars extends PluginBase implements Listener{
 
@@ -54,8 +57,7 @@ class SkyWars extends PluginBase implements Listener{
                         	1
                     	),
                 	array(
-                		2
-                		60,
+                		260,
                         	0,
                         	5
                     	),
@@ -101,7 +103,7 @@ class SkyWars extends PluginBase implements Listener{
 							$x = $sender->getX();
 							$y = $sender->getY();
 							$z = $sender->getZ();
-							$this->config->set('spawns', array($x, $y, $z));
+							$this->config->add('spawns', array($x, $y, $z));
 							$sender->sendMessage("Spawn position set to: ".$x.", ".$y.", ".$z.", level: ".$sender->getLevel());
 						}
 				}
@@ -121,24 +123,21 @@ class SkyWars extends PluginBase implements Listener{
 	
 	public function onLevelChange(EntityLevelChangeEvent $event){
 		$p = $event->getEntity();
-		if($event->getTarget() == $this->aworld){ // a world
-			if(count($this->getServer()->getLevel($this->aworld)->getPlayers()) => $this->neededplayers){
+		if($event->getTarget() == $this->config->get('aworld')){ // a world
+			if($this->aplayers => $this->config->get('neededplayers') and $this->skywarsstarted == false){
 				$event->setCancelled(true);
 				$p->sendMessage("The game is full");
-			}elseif(count($this->getServer()->getLevel($this->config->get('aworld'))->getPlayers()) == $this->neededplayers){
-				$n = count($this->getServer()->getLevel($thisconfig->get('aworld'))->getPlayers());
+                        }elseif($this->aplayers < $this->config->get('neededplayers') and $this->skywarsstarted == false){
+                                $n = $this->aplayers; //count($this->getServer()->getLevel($this->config->get('aworld'))->getPlayers());
 				$spawn = $this->->config->get('spawns'[$n]); //no need to do + 1 on this, because arrays start counting form 0
 				$p->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->config->get('aworld'));
-                                $this->startGame($this->config->get('aworld'));
-                        }elseif(count($this->getServer()->getLevel($this->config->get('aworld'))->getPlayers()) < $this->neededplayers){
-                                $n = count($this->getServer()->getLevel($this->config->get('aworld'))->getPlayers());
-				$spawn = $this->->config->get('spawns'[$n]); //no need to do + 1 on this, because arrays start counting form 0
-				$p->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->config->get('aworld'));
-      
-			}elseif($this->gamestarted == true){
+      				$this->aplayers = $this->aworld + 1;
+      				if($this->aplayers == $this->config->get('neededplayers')){
+      					$this->startGame($this->config->get('aworld'));
+      				}
+			}elseif($this->skywarsstarted == true){
                                 $p->sendMessage("The game is already started");
                         }
-			//TODO: count if there are enough player to start a game
 		}else{
 			return;
 		}
