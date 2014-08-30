@@ -4,7 +4,7 @@
 // To do 2: Add multiworld support!!!!!!! 3:
 // To do 3: add /sktime so players can see how much time is left until the game begins
 // To do 4: add if an 11th player joins it sends him in spectator mode
-// To do 5: add if 5 players wanna start they use /sktimeskip and the game will begin 10 seconds later
+// To do 5: add if 5 players wanna start they use /sktimeskip and the game will begin 10 seconds later ☆ done
 
 // To do 6: add that instead of the players having to break the block itl'l auto break whats under them when the time begins :)
 // To do 7: add a config seting so everything can be properly saved and edited☆ done
@@ -87,7 +87,7 @@ class SkyWars extends PluginBase implements Listener{
 					$sender->sendMessage("/sk stat [player] = get a player stats");
 					return true;
         			}else{
-        				$sender->sendMessage("You don't have permissino to run this command");
+        				$sender->sendMessage("You haven't the permission to run this command");
         			}
 			case "skywars" //will set aliases later in plugin.yml
 				$params = array_shift($args[0]);
@@ -105,6 +105,19 @@ class SkyWars extends PluginBase implements Listener{
 							$z = $sender->getZ();
 							$this->config->add('spawns', array($x, $y, $z));
 							$sender->sendMessage("Spawn position set to: ".$x.", ".$y.", ".$z.", level: ".$sender->getLevel());
+						}else{
+							$sender->sendMessage("You haven't the permission to run this command.");
+						}
+					case "skiptime":
+						if($sender->hasPermission("skywars.command.skiptime") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
+							if($this->aplayers > 3){
+								$this->startGame($sender->getLevel());
+								$sender->sendMessage("You started the game skipping the waiting time!");
+							}else{
+								$sender->sendMessage("There are less than 3 players, you can't start the game yet.");
+							}
+						}else{
+							$sender->sendMessage("You haven't the permission to run this command.");
 						}
 				}
 			//TODO setpos and setworld and setlobby
