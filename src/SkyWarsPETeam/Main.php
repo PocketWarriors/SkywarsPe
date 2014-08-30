@@ -19,12 +19,14 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandExecutor;
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginCommand;
-use pocketmine\player;
+use pocketmine\Player;
 use pocketmine\item\Item;
-use pocketmine\event\Event;
-use pocketmine\event\playerInteractEvent
-use pocketmine\event\PlayerDeathEvent;
-use pocketmine\event\EntityLevelChangeEvent;
+use pocketmine\event\player\PlayerChatEvent;
+use pocketmine\event\player\PlayerInteractEvent;
+use pocketmine\event\player\PlayerDeathEvent;
+use pocketmine\event\entity\EntityLevelChangeEvent;
+use pocketmine\event\block\BlockPlaceEvent;
+use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\EventExecutor;
 use pocketmine\event\EventPriority;
 use pocketmine\event\Listener;
@@ -169,6 +171,21 @@ class SkyWars extends PluginBase implements Listener{
 							return true;
 						}
 					break;
+					case "left":
+						if($sender->hasPermission("skywars.command.left") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
+							if($sender->getLevel() == $this->config->get('aworld')){
+								$playersleft = $this->config->get('neededplayers') - $this->aplayers;
+								$sender->sendMessage("Players left untill the game begin: ".$playersleft);
+								return true;
+							}else{
+								$sender->sendMessage("You are not in a SkyWars world.");
+								return true;
+							}
+						}else{
+							$sender->sendMessage("You haven't the permission to run this command.");
+							return true;
+						}
+					break;
 				}
 		}
 	}
@@ -186,6 +203,16 @@ class SkyWars extends PluginBase implements Listener{
 		if($event->getPlayer->getLevel() == $this->config->get('lobby') and !$event->getPlayer->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){
 			$event->setCancelled(true);
 			$event->getPlayer()->sendMessage("You don't have permission to edit the lobby.");
+		}
+	}
+	
+	public function onLevelChange(EntityLevelChangeEvent $event){
+		if($event->getTarget() == $this->config->get('aworld')){
+			foreach($this->getServer()->getLevel($this->config->get('aworld'))->getPlayers() as $p){
+				$p->sendMessage("A player joined the game!");
+				$playersleft = $this->config->get('neededplayers') - $this->aplayers;
+				$p->sendMessage("Players left untill the game begin: ".$playersleft);
+			}
 		}
 	}
 	
