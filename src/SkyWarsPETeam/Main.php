@@ -202,26 +202,27 @@ class SkyWars extends PluginBase implements Listener{
         }
         
         public  function onDeath(EntityDeathEvent $event){
-        	if($event->getEntity()->getLevel() == $this->config->get('aworld')){ //if in skywars world
+        	if($event->getEntity()->getLevel() == $this->config->get('aworld')){ //if in skywars aworld
         		$this->aplayers = $this->aplayers -1; //remove a player
         		$victim = $event->getEntity()->getName();
         		$this->addDeath($victim);
-        		$cause = $ent->getLastDamageCause();
-        		if($cause instanceof EntityDamageByEntityEvent){
+        		$cause = $event->getEntity()->getLastDamageCause();
+        		if($cause instanceof EntityDamageByEntityEvent){ //TODO: we should test this, I don't know if works
 				$killer = $cause->getDamager();
 				if($killer instanceof Player){
 					$this->addKill($killer);
 				}
 			}
         		if($this->aplayers <= 1){ //if only 1 player is left
-        			foreach($this->getServer->getLevel($this->aworld)->getPlayers() as $p){ //detects the winner
+        			foreach($this->getServer->getLevel($this->config->get('aworld'))->getPlayers() as $p){ //detects the winner
         				$p->sendMessage("You won the match!");
         				$p->sendMessage("The game has finished, you will be teleported to the lobby.");
         				$p->teleport($this->getServer()->getLevel($this->config->get('lobby'))->getSafeSpawn()); //teleport to the lobby
-        				$points = $this->points->get($p[2]) + $this->config->get('points-per-match');
+        				$points = $this->points->get($p[2]) + $this->config->get('points-per-match'); //get points and add
         				$deaths = $this->points->get($player[0]); //get the victim's deaths, add one and store in a variable
        					$kills = $this->points->get($player[1]); //get the players kills and store in a var
-        				$this->config->set($p, array($deaths), array($kills), array($points))
+        				$this->config->set($p, array($deaths), array($kills), array($points));
+        				$this->stopGame($this->config->get('aworld')); //stop the game
         			}
         		}
         	}
@@ -238,6 +239,13 @@ class SkyWars extends PluginBase implements Listener{
 			$p->sendMessage("The game starts NOW!! Good luck!");
 			$p->sendMessage("You can exit using: /sk exit");
 		}
+		return true;
+	}
+	
+	public function stopGame($level){
+		$this->skywarsstarted == false; //put the array to false
+		//TODO: restore the original map
+		return true;
 	}
 	
 	public function addDeath($player){
@@ -249,6 +257,7 @@ class SkyWars extends PluginBase implements Listener{
        			$points = $this->points->get($player[2]) - $this->config->get('points-per-death'); //get the player points
         		$this->points->set($player, array($deaths), array($kills), array($points)); //set the victim's actual deaths & kills
         	}
+        	return true;
 	}
 	
 	public function addKill($player){
@@ -260,6 +269,7 @@ class SkyWars extends PluginBase implements Listener{
        			$points = $this->points->get($player[2]) + $this->config->get('points-per-kill');
         		$this->points->set($player, array($deaths), array($kills), array($points)); //set the victim's actual deaths & kills
         	}
+        	return true;
 	}
 }
 
