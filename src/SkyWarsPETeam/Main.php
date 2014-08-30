@@ -218,7 +218,10 @@ class SkyWars extends PluginBase implements Listener{
         				$p->sendMessage("You won the match!");
         				$p->sendMessage("The game has finished, you will be teleported to the lobby.");
         				$p->teleport($this->getServer()->getLevel($this->config->get('lobby'))->getSafeSpawn()); //teleport to the lobby
-        				//TODO add points system
+        				$points = $this->points->get($p[2]) + $this->config->get('points-per-match');
+        				$deaths = $this->points->get($player[0]); //get the victim's deaths, add one and store in a variable
+       					$kills = $this->points->get($player[1]); //get the players kills and store in a var
+        				$this->config->set($p, array($deaths), array($kills), array($points))
         			}
         		}
         	}
@@ -239,21 +242,23 @@ class SkyWars extends PluginBase implements Listener{
 	
 	public function addDeath($player){
 		if(!$this->points->exist($player)){ //if the name of the victim is not in the config
-        			$this->points->set($player, array(1), array(0)); //set the first death
+        			$this->points->set($player, array(1), array(0), array(0)); //set the first death
        		}else{
        			$deaths = $this->points->get($player[0]) + 1; //get the victim's deaths, add one and store in a variable
        			$kills = $this->points->get($player[1]); //get the players kills and store in a var
-        		$this->points->set($player, array($deaths), array($kills)); //set the victim's actual deaths & kills
+       			$points = $this->points->get($player[2]) - $this->config->get('points-per-death'); //get the player points
+        		$this->points->set($player, array($deaths), array($kills), array($points)); //set the victim's actual deaths & kills
         	}
 	}
 	
 	public function addKill($player){
 		if(!$this->points->exist($player)){ //if the name of the victim is not in the config
-        			$this->points->set($player, array(0), array(1)); //set the first kill
+        			$this->points->set($player, array(0), array(1), array($this->config->get('points-per-kill'))); //set the first kill
        		}else{
-       			$deaths = $this->points->get($player[0]); //get the victim's deaths, add one and store in a variable
+       			$deaths = $this->points->get($player[0]); //get the victim's deaths
        			$kills = $this->points->get($player[1]) + 1; //get the players kills and store in a var
-        		$this->points->set($player, array($deaths), array($kills)); //set the victim's actual deaths & kills
+       			$points = $this->points->get($player[2]) + $this->config->get('points-per-kill');
+        		$this->points->set($player, array($deaths), array($kills), array($points)); //set the victim's actual deaths & kills
         	}
 	}
 }
