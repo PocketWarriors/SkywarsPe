@@ -50,6 +50,7 @@ class SkyWars extends PluginBase implements Listener{
         	$this->getServer()->getSchedule()->scheduleRepeatingTask(new Timer($this), 1200); //this runs every second, but maybe will change in every minute
         	//TODO: create a class for the timer
         	$this->config = new Config($this->getDataFolder()."config.yml", Config::YAML, array(
+        	"chat-format" => true,
                 "lobby" => 'world',
                 "aworld" => 'swaworld',
                 "neededplayers" => '6' //this is just for test
@@ -71,7 +72,9 @@ class SkyWars extends PluginBase implements Listener{
                     )
                 )
             	));
+            	$this->points = new Config($this->getDataFolder()."config.yml", Config::YAML);
             	$this->config->save();
+            	$this->points->save();
             
 	}
 
@@ -170,39 +173,7 @@ class SkyWars extends PluginBase implements Listener{
 		}
 	}
 	
-	/*Defining my function to start the game*/
-	public function startGame($level){
-		$this->skywarsstarted == true //put the array to true
-		foreach($this->getServer()->getLevel($level)->getPlayers() as $p){ //get every single player in the level
-			$x = $p->getGroundX; 
-			$y = $p->getGroundY; //get the ground coordinates
-			$z = $p->getGroundZ; //these are needed to break the glass under the player
-			//TODO set an air block at $x, $y, $z, to automatically break the block under the player when the game start
-			$p->sendMessage("The game starts NOW!! Good luck!");
-			$p->sendMessage("You can exit using: /sk exit");
-		}
-	}
-	
-	/*public function onLevelChange(EntityLevelChangeEvent $event){
-		$p = $event->getEntity();
-		if($event->getTarget() == $this->config->get('aworld')){ // a world
-			if($this->aplayers => $this->config->get('neededplayers') and $this->skywarsstarted == false){
-				$event->setCancelled(true);
-				$p->sendMessage("The game is full");
-                        }elseif($this->aplayers < $this->config->get('neededplayers') and $this->skywarsstarted == false){
-                                
-      				$this->aplayers = $this->aworld + 1;
-      				if($this->aplayers == $this->config->get('neededplayers')){
-      					$this->startGame($this->config->get('aworld'));
-      				}
-			}elseif($this->skywarsstarted == true){
-                                $p->sendMessage("The game is already started");
-                        }
-		}else{
-			return;
-		}
-	}*/ 
-	//NOW WILL BE HANDLED IN COMMANDS AND SIGN TECH
+
 	
 	public function onBlockBreak(BlockBreakEvent $event){
 		if($event->getPlayer->getLevel() == $this->config->get('lobby') and !$event->getPlayer->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){ //if level is lobby and player hasn't the permission to modify it
@@ -233,6 +204,15 @@ class SkyWars extends PluginBase implements Listener{
         public  function onDeath(EntityDeathEvent $event){
         	if($event->getEntity()->getLevel() == $this->config->get('aworld')){ //if in skywars world
         		$this->aplayers = $this->aplayers -1; //remove a player
+        		$victim = $event->getEntity()->getName();
+        		$this->addDeath($victim);
+        		$cause = $ent->getLastDamageCause();
+        		if($cause instanceof EntityDamageByEntityEvent){
+				$killer = $cause->getDamager();
+				if($killer instanceof Player){
+					$this->addKill($killer);
+				}
+			}
         		if($this->aplayers <= 1){ //if only 1 player is left
         			foreach($this->getServer->getLevel($this->aworld)->getPlayers() as $p){ //detects the winner
         				$p->sendMessage("You won the match!");
@@ -243,6 +223,39 @@ class SkyWars extends PluginBase implements Listener{
         		}
         	}
         }
+        
+        /*Defining my function to start the game*/
+	public function startGame($level){
+		$this->skywarsstarted == true //put the array to true
+		foreach($this->getServer()->getLevel($level)->getPlayers() as $p){ //get every single player in the level
+			$x = $p->getGroundX; 
+			$y = $p->getGroundY; //get the ground coordinates
+			$z = $p->getGroundZ; //these are needed to break the glass under the player
+			//TODO set an air block at $x, $y, $z, to automatically break the block under the player when the game start
+			$p->sendMessage("The game starts NOW!! Good luck!");
+			$p->sendMessage("You can exit using: /sk exit");
+		}
+	}
+	
+	public function addDeath($player){
+		if(!$this->points->exist($player)){ //if the name of the victim is not in the config
+        			$this->points->set($player, array(1), array(0)); //set the first death
+       		}else{
+       			$deaths = $this->points->get($player[0]) + 1; //get the victim's deaths, add one and store in a variable
+       			$kills = $this->points->get($player[1]); //get the players kills and store in a var
+        		$this->points->set($player, array($deaths), array($kills)); //set the victim's actual deaths & kills
+        	}
+	}
+	
+	public function addKill($player){
+		if(!$this->points->exist($player)){ //if the name of the victim is not in the config
+        			$this->points->set($player, array(0), array(1)); //set the first kill
+       		}else{
+       			$deaths = $this->points->get($player[0]); //get the victim's deaths, add one and store in a variable
+       			$kills = $this->points->get($player[1]) + 1; //get the players kills and store in a var
+        		$this->points->set($player, array($deaths), array($kills)); //set the victim's actual deaths & kills
+        	}
+	}
 }
 
 
