@@ -71,7 +71,21 @@ class SkyWars extends PluginBase implements Listener{
                         	260,
                         	0,
                         	5
+                       
+                       ),
+                       array(
+                       	        280,
+                       	        0,
+                       	        5
+                       	        
+                      ),
+                      array(
+                      	        292,
+                      	        0,
+                      	        5
+                      	        
                     )
+                   
                 )
             	));
             	$this->points = new Config($this->getDataFolder()."config.yml", Config::YAML);
