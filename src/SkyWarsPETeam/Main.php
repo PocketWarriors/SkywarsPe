@@ -33,16 +33,19 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
 use pocketmine\scheduler\PluginTask;
 
+/*Thes are dynamics array, I used them to store some info like: configs, if the game is started and so on.
+They can be called using $this->name*/
 public $skywarsstarted = false;
 public $config;
 public $aplayers;
 //public $bplayers;
 //public $cplayers;
 
+
 class SkyWars extends PluginBase implements Listener{
 
 	public function onEnable(){
-		$this->getServer()->getPluginManager->registerEvents($this, $this);
+		$this->getServer()->getPluginManager->registerEvents($this, $this); 
         	$this->getLogger()->info(TextFormat::DARK_RED . "SKY" . TextFormat::DARK_BLUE . "WARS" . TextFormat::AQUA . "plugin by SkyWarsPETeam is Loading...");
         	$this->getServer()->getSchedule()->scheduleRepeatingTask(new Timer($this), 1200); //this runs every second, but maybe will change in every minute
         	//TODO: create a class for the timer
@@ -80,7 +83,7 @@ class SkyWars extends PluginBase implements Listener{
 	public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
 		switch($cmd->getName()){
 			case "skywarshowto":
-        			if($sender->hasPermission("skywars.command.howto") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")) {
+        			if($sender->hasPermission("skywars.command.howto") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")) { 
 					$sender->sendMessage("----How To Play skywars----");
 					$sender->sendMessage("/sk play = start a game");
 					$sender->sendMessage("/sk exit = exit from a game");
@@ -94,20 +97,20 @@ class SkyWars extends PluginBase implements Listener{
 				switch($params){
 					case "play":
 						if($sender->hasPermission("skywars.command.start") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
-							if($this->aplayers => $this->config->get('neededplayers') and $this->skywarsstarted == false){
-								$sender->sendMessage("The game is full");
+							if($this->aplayers => $this->config->get('neededplayers') and $this->skywarsstarted == false){ //if players in the world are more or equal as the max players
+								$sender->sendMessage("The game is full"); // game full
 								return true;
-							}elseif($this->aplayers < $this->config->get('neededplayers') and $this->skywarsstarted == false){
-								$n = $this->aplayers;
-								$spawn = $this->->config->get('spawns'[$n]); //no need to do + 1 on this, because arrays start counting form 0
-								$sender->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->config->get('aworld'));
-								$this->aplayers = $this->aworld + 1;
+							}elseif($this->aplayers < $this->config->get('neededplayers') and $this->skywarsstarted == false){ //if player number is less than the max.
+								$n = $this->aplayers; //count the players and store in a variable
+								$spawn = $this->->config->get('spawns'[$n]); //no need to do + 1 on this, because arrays start counting form 0 // get the correct spawn place
+								$sender->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->config->get('aworld')); //teleport to it
+								$this->aplayers = $this->aworld + 1; //then add a player to the array
 								$sender->sendMessage("You have been teleported to the game world.")
-      								if($this->aplayers == $this->config->get('neededplayers')){
-      									$this->startGame($this->config->get('aworld'));
-      								}
+      								if($this->aplayers == $this->config->get('neededplayers')){ //if the players became the same as neededplayers
+      									$this->startGame($this->config->get('aworld')); //start the game
+      								} 
       								return true;
-							}elseif($this->skywarsstarted == true){
+							}elseif($this->skywarsstarted == true){ //if the game is already started
                         					$sender->sendMessage("The game is already started");
                         					return true;
                         				}
@@ -118,9 +121,9 @@ class SkyWars extends PluginBase implements Listener{
 					break;
 					case "exit":
 						if($sender->hasPermission("skywars.command.exit") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
-							if($sender->getLevel() == $this->config->get('aworld')){
-								$this->aplayers = $this->aplayers - 1;
-								$sender->teleport($this->getServer()->getLevel($this->config->get('lobby'))->getSafeSpawn);
+							if($sender->getLevel() == $this->config->get('aworld')){ //if the level of the sender is a skywars one
+								$this->aplayers = $this->aplayers - 1; //remove 1 to the array
+								$sender->teleport($this->getServer()->getLevel($this->config->get('lobby'))->getSafeSpawn); //teleport to the lobby
 								$sender->sendMessage("You left the game.");
 								return true;
 							}else{
@@ -138,9 +141,9 @@ class SkyWars extends PluginBase implements Listener{
 					case "spawnpos":
 						if($sender->hasPermission("skywars.command.pos") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
 							$x = $sender->getX();
-							$y = $sender->getY();
+							$y = $sender->getY(); //get coordinates and store in variables
 							$z = $sender->getZ();
-							$this->config->add('spawns', array($x, $y, $z));
+							$this->config->add('spawns', array($x, $y, $z)); //add the variables to the config
 							$sender->sendMessage("Spawn position set to: ".$x.", ".$y.", ".$z.", level: ".$sender->getLevel());
 							return true;
 						}else{
@@ -150,8 +153,8 @@ class SkyWars extends PluginBase implements Listener{
 					break;
 					case "skiptime":
 						if($sender->hasPermission("skywars.command.skiptime") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
-							if($this->aplayers > 3){
-								$this->startGame($sender->getLevel());
+							if($this->aplayers > 3){ //if the players in the array are more than 3
+								$this->startGame($sender->getLevel()); //start game on the sender level
 								$sender->sendMessage("You started the game skipping the waiting time!");
 								return true;
 							}else{
@@ -167,12 +170,13 @@ class SkyWars extends PluginBase implements Listener{
 		}
 	}
 	
+	/*Defining my function to start the game*/
 	public function startGame($level){
-		$this->skywarsstarted == true;
-		foreach($this->getServer()->getLevel($level)->getPlayers() as $p){
-			$x = $p->getGroundX;
-			$y = $p->getGroundY;
-			$z = $p->getGroundZ;
+		$this->skywarsstarted == true //put the array to true
+		foreach($this->getServer()->getLevel($level)->getPlayers() as $p){ //get every single player in the level
+			$x = $p->getGroundX; 
+			$y = $p->getGroundY; //get the ground coordinates
+			$z = $p->getGroundZ; //these are needed to break the glass under the player
 			//TODO set an air block at $x, $y, $z, to automatically break the block under the player when the game start
 			$p->sendMessage("The game starts NOW!! Good luck!");
 			$p->sendMessage("You can exit using: /sk exit");
@@ -201,8 +205,8 @@ class SkyWars extends PluginBase implements Listener{
 	//NOW WILL BE HANDLED IN COMMANDS AND SIGN TECH
 	
 	public function onBlockBreak(BlockBreakEvent $event){
-		if($event->getPlayer->getLevel() == $this->config->get('lobby') and !$event->getPlayer->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){
-			$event->setCancelled(true);
+		if($event->getPlayer->getLevel() == $this->config->get('lobby') and !$event->getPlayer->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){ //if level is lobby and player hasn't the permission to modify it
+			$event->setCancelled(true); // cancel the event
 			$event->getPlayer()->sendMessage("You don't have permission to edit the lobby.");
 		}
 	}
@@ -215,24 +219,25 @@ class SkyWars extends PluginBase implements Listener{
 	}
 	
 	public function onPlayerInteract(PlayerInteractEvent $event){
-		$ID = $event->getBlock()->getID();
+		$ID = $event->getBlock()->getID(); //get the id of the touched block
 		//TODO sign system
 	}
         	
         public function onHurt(EntityDamageByEntityEvent $event){
         	if($event->getEntity()->getLevel() == $this->config->get('lobby')){
-        		$event->setCancelled(true);
+        		$event->setCancelled(true); //disable pvp in the lobby
         		$event->getEntity()->sendMessage("You cannot hurt players in the lobby.");
         	}
         }
         
         public  function onDeath(EntityDeathEvent $event){
-        	if($event->getEntity()->getLevel() == $this->config->get('aworld')){
-        		if(count($this->getServer->getLevel($this->config->get('aworld'))->getPlayers()) <= 1){
-        			foreach($this->getServer->getLevel($this->aworld)->getPlayers() as $p){
+        	if($event->getEntity()->getLevel() == $this->config->get('aworld')){ //if in skywars world
+        		$this->aplayers = $this->aplayers -1; //remove a player
+        		if($this->aplayers <= 1){ //if only 1 player is left
+        			foreach($this->getServer->getLevel($this->aworld)->getPlayers() as $p){ //detects the winner
         				$p->sendMessage("You won the match!");
         				$p->sendMessage("The game has finished, you will be teleported to the lobby.");
-        				$p->teleport($this->getServer()->getLevel($this->config->get('lobby'))->getSafeSpawn());
+        				$p->teleport($this->getServer()->getLevel($this->config->get('lobby'))->getSafeSpawn()); //teleport to the lobby
         				//TODO add points system
         			}
         		}
