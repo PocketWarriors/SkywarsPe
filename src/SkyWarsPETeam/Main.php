@@ -54,6 +54,7 @@ class SkyWars extends PluginBase implements Listener{
         	$this->config = new Config($this->getDataFolder()."config.yml", Config::YAML, array(
         	"chat-format" => true,
                 "lobby" => 'world',
+                "sksign" => 'sign',
                 "aworld" => 'swaworld',
                 "neededplayers" => '6' //this is just for test
                 "spawns" => array(
@@ -231,7 +232,14 @@ class SkyWars extends PluginBase implements Listener{
 	}
 	
 	public function onPlayerInteract(PlayerInteractEvent $event){
-		$ID = $event->getBlock()->getID(); //get the id of the touched block
+		$sksign = $event->getBlock()->getID(323); //get the id of the touched block
+		if($sksign = true and neededplayers = false and $this->world = lobby);
+		$p->teleport($this->world = skworld);
+	}
+	      else{
+	      	
+	      }
+		 $p-sendMessage("sorry but this game has already begun")
 		//TODO sign system
 	}
         	
