@@ -231,24 +231,28 @@ class SkyWars extends PluginBase implements Listener{
 }
 
 public function onBlockPlace(BlockPlaceEvent $event){
-        $ID = $event->getBlock()->getID() if($ID == "323"); return true }elseif{ return false
+        $ID = $event->getBlock()->getID(); if($ID == "323");
         $players = count($event->getPlayer()->getLevel()->getPlayers());
         $block = $event->getBlock();
         if($block instanceof Sign){
             $text = $block->getText();
-            if(strtolower($text[0]) == "sksign"($text[1] == "world"){
+            if(strtolower($text[0]) == "sksign"($text[1] == "aworld"){
                 $text[0] = "[SkywarsPe]";
                 $text[1] = "aworld";
                 $text[2] = "$players";
                 $text[3] = "$playersneeded";
             }
             $block->scheduleUpdate();
+            return true;
         }
 }
 	public function onPlayerInteract(PlayerInteractEvent $event){
-		$ID = $event->getBlock()->getID() if($ID == "323"); return true }elseif{ return false //get the id of the touched block
-		if($sksign = true and neededplayers = false and $this->world = lobby);
+		$ID = $event->getBlock()->getID() if($ID == "323"); 
+                if($block instanceof sign){
+                if(strtolower($text[0] == [SkywarsPe]){
+		if($sksign = true; and neededplayers = false);
 		$p->teleport($this->world = $aworld);
+                return true;
 	}
 	      }else{
 	      	
