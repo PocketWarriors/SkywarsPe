@@ -226,20 +226,34 @@ class SkyWars extends PluginBase implements Listener{
 			foreach($this->getServer()->getLevel($this->config->get('aworld'))->getPlayers() as $p){
 				$p->sendMessage("A player joined the game!");
 				$playersleft = $this->config->get('neededplayers') - $this->aplayers;
-				$p->sendMessage("Players left untill the game begin: ".$playersleft);
-			}
-		}
-	}
-	
+				$p->sendMessage("Players left untill the game begin: ".)
+  }
+}
+
+public function onBlockPlace(BlockPlaceEvent $event){
+        $ID = $event->getBlock()->getID() if($ID == "323"); return true }elseif{ return false
+        $players = count($event->getPlayer()->getLevel()->getPlayers());
+        $block = $event->getBlock();
+        if($block instanceof Sign){
+            $text = $block->getText();
+            if(strtolower($text[0]) == "sksign"($text[1] == "world"){
+                $text[0] = "[SkywarsPe]";
+                $text[1] = "aworld";
+                $text[2] = "$players";
+                $text[3] = "$playersneeded";
+            }
+            $block->scheduleUpdate();
+        }
+}
 	public function onPlayerInteract(PlayerInteractEvent $event){
-		$sksign = $event->getBlock()->getID(323); //get the id of the touched block
+		$ID = $event->getBlock()->getID() if($ID == "323"); return true }elseif{ return false //get the id of the touched block
 		if($sksign = true and neededplayers = false and $this->world = lobby);
-		$p->teleport($this->world = skworld);
+		$p->teleport($this->world = $aworld);
 	}
-	      else{
+	      }else{
 	      	
 	      }
-		 $p-sendMessage("sorry but this game has already begun")
+		 return false
 		//TODO sign system
 	}
         	
