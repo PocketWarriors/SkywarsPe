@@ -209,14 +209,14 @@ class SkyWars extends PluginBase implements Listener{
 	
 	public function onBlockBreak(BlockBreakEvent $event){
 		if($event->getPlayer->getLevel() == $this->config->get('lobby') and !$event->getPlayer->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){ //if level is lobby and player hasn't the permission to modify it
-			$event->setCancelled(true); // cancel the event
+			$event->setCancelled(); // cancel the event
 			$event->getPlayer()->sendMessage("You don't have permission to edit the lobby.");
 		}
 	}
 	
 	public function onBlockPlace(BlockPlaceEvent $event){
 		if($event->getPlayer->getLevel() == $this->config->get('lobby') and !$event->getPlayer->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){
-			$event->setCancelled(true);
+			$event->setCancelled();
 			$event->getPlayer()->sendMessage("You don't have permission to edit the lobby.");
 		}
 	}
@@ -226,7 +226,7 @@ class SkyWars extends PluginBase implements Listener{
 			foreach($this->getServer()->getLevel($this->config->get('aworld'))->getPlayers() as $p){
 				$p->sendMessage("A player joined the game!");
 				$playersleft = $this->config->get('neededplayers') - $this->aplayers;
-				$p->sendMessage("Players left untill the game begin: ".)
+				$p->sendMessage("Players left untill the game begin: ".$playersleft)
   }
 }
 
@@ -244,9 +244,9 @@ public function onBlockPlace(BlockPlaceEvent $event){
                 $text[2] = "$players|Max 6";
                 $text[3] = "$skywarsstarted";
                 if($skywarsstarted == true);
-                $text[3] = "currently not joinable"
+                $text[3] = "Currently not joinable"
                 if($skywarsstarted == false) and neededplayers == false);
-                $text[3] = "JOIN NOW)
+                $text[3] = "JOIN NOW")
             }
             $block->scheduleUpdate();
             return true;
@@ -314,7 +314,7 @@ $event->setCancelled(true);
         
         /*Defining my function to start the game*/
 	public function startGame($level){
-		$this->skywarsstarted == true //put the array to true
+		$this->skywarsstarted == true; //put the array to true
 		foreach($this->getServer()->getLevel($level)->getPlayers() as $p){ //get every single player in the level
 			$x = $p->getGroundX; 
 			$y = $p->getGroundY; //get the ground coordinates
@@ -328,6 +328,7 @@ $event->setCancelled(true);
 	
 	public function stopGame($level){
 		$this->skywarsstarted == false; //put the array to false
+		$this->aplayers == 0; //restore players
 		//TODO: restore the original map
 		return true;
 	}
@@ -339,19 +340,19 @@ $event->setCancelled(true);
        			$deaths = $this->points->get($player[0]) + 1; //get the victim's deaths, add one and store in a variable
        			$kills = $this->points->get($player[1]); //get the players kills and store in a var
        			$points = $this->points->get($player[2]) - $this->config->get('points-per-death'); //get the player points
-        		$this->points->set($player, array($deaths), array($kills), array($points)); //set the victim's actual deaths & kills
+        		$this->points->set($player, array($deaths, $kills, $points)); //set the victim's actual deaths & kills
         	}
         	return true;
 	}
 	
 	public function addKill($player){
-		if(!$this->points->exist($player)){ //if the name of the victim is not in the config
+		if(!$this->points->exist($player)){ //if the name of the killer is not in the config
         			$this->points->set($player, array(0), array(1), array($this->config->get('points-per-kill'))); //set the first kill
        		}else{
-       			$deaths = $this->points->get($player[0]); //get the victim's deaths
+       			$deaths = $this->points->get($player[0]); //get the killer's deaths
        			$kills = $this->points->get($player[1]) + 1; //get the players kills and store in a var
        			$points = $this->points->get($player[2]) + $this->config->get('points-per-kill');
-        		$this->points->set($player, array($deaths), array($kills), array($points)); //set the victim's actual deaths & kills
+        		$this->points->set($player, array($deaths, $kills, $points)); //set the killer's actual deaths & kills
         	}
         	return true;
 	}
