@@ -232,6 +232,8 @@ class SkyWars extends PluginBase implements Listener{
 
 public function onBlockPlace(BlockPlaceEvent $event){
         $ID = $event->getBlock()->getID(); if($ID == "323");
+        $neededplayers = ($this->aplayers < $this->config->get('neededplayers') and $this->skywarsstarted == false){ }else{ set->text[3] "not joinable"
+        
         $players = count($event->getPlayer()->getLevel()->getPlayers());
         $block = $event->getBlock();
         if($block instanceof Sign){
@@ -240,7 +242,7 @@ public function onBlockPlace(BlockPlaceEvent $event){
                 $text[0] = "[SkywarsPe]";
                 $text[1] = "aworld";
                 $text[2] = "$players";
-                $text[3] = "$playersneeded";
+                $text[3] = "$neededplayers";
             }
             $block->scheduleUpdate();
             return true;
