@@ -1,6 +1,6 @@
 <?php
 
-// To do 1: Make a sign that shows how many people are in that match and tapping it will let u join unless it's full
+// To do 1: Make a sign that shows how many people are in that match and tapping it will let u join unless it's full * done
 // To do 2: Add multiworld support!!!!!!! 3:
 // To do 3: add /sktime so players can see how much time is left until the game begins
 // To do 4: add if an 11th player joins it sends him in spectator mode
@@ -231,36 +231,44 @@ class SkyWars extends PluginBase implements Listener{
 }
 
 public function onBlockPlace(BlockPlaceEvent $event){
-        $ID = $event->getBlock()->getID(); if($ID == "323");
-        $neededplayers = ($this->aplayers < $this->config->get('neededplayers') and $this->skywarsstarted == false){ }else{ set->text[3] "not joinable"
-        
+        $ID = $event->getBlock()->getID(); 
+        $neededplayers = ($this->aplayers < $this->config->get('neededplayers') and $this->skywarsstarted == false){
+        if(this->config->get('neededplayers') and this->skywarsstarted == false);
         $players = count($event->getPlayer()->getLevel()->getPlayers());
         $block = $event->getBlock();
         if($block instanceof Sign){
             $text = $block->getText();
             if(strtolower($text[0]) == "sksign"($text[1] == "aworld"){
                 $text[0] = "[SkywarsPe]";
-                $text[1] = "aworld";
-                $text[2] = "$players";
-                $text[3] = "$neededplayers";
+                $text[1] = "aworld|abc";
+                $text[2] = "$players|Max 6";
+                $text[3] = "$skywarsstarted";
+                if($skywarsstarted == true);
+                $text[3] = "currently not joinable"
+                if($skywarsstarted == false) and neededplayers == false);
+                $text[3] = "JOIN NOW)
             }
             $block->scheduleUpdate();
             return true;
+$event->getPlayer->hasPermission("skywars.createsign") || !$event->getPlayer()->hasPermission("skywars")){
+$event->setCancelled(true);
         }
 }
 	public function onPlayerInteract(PlayerInteractEvent $event){
-		$ID = $event->getBlock()->getID() if($ID == "323"); 
+		$ID = $event->getBlock()->getID();
+                $block = $event->getBlock();
                 if($block instanceof sign){
-                if(strtolower($text[0] == [SkywarsPe]){
-		if($sksign = true; and neededplayers = false);
-		$p->teleport($this->world = $aworld);
+                $text = $block->getText();
+                if(strtolower($text[0] == [SkywarsPe]); and ($text[3] = "JOINABLE");
+		$p->teleport($this->world = $this->config->get('aworld');
+                $event->getPlayer->hasPermission("skywars.createsign") || !$event->getPlayer()->hasPermission("skywars")){.             
+                $event->setcancelled(true);
                 return true;
 	}
 	      }else{
 	      	
 	      }
-		 return false
-		//TODO sign system
+		 return false;
 	}
         	
         public function onHurt(EntityDamageByEntityEvent $event){
