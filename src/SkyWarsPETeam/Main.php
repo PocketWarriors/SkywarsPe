@@ -105,6 +105,7 @@ class SkyWars extends PluginBase implements Listener{
 			case "skywarshowto":
         			if($sender->hasPermission("skywars.command.howto") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")) { 
 					$sender->sendMessage("----How To Play skywars----");
+                                        $sender->sendMessage("/sk checktime = check the time left");
 					$sender->sendMessage("/sk play = start a game");
 					$sender->sendMessage("/sk exit = exit from a game");
 					$sender->sendMessage("/sk stat [player] = get a player stats");
@@ -187,6 +188,12 @@ class SkyWars extends PluginBase implements Listener{
 							return true;
 						}
 					break;
+                                        case "checktime":
+			                if($sender->hasPermission("skywars.command.checktime") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
+			                if($this->aplayers => $this->config->get('neededplayers') and $this->skywarsstarted == false){                              
+                                        $this->startCheck = microtime(true);
+                                        $ct = $this->checkTime();
+                                        $sender->sendMessage("[SkywarsPe]There is".$ct."time left until game begins
 					case "left":
 						if($sender->hasPermission("skywars.command.left") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
 							if($sender->getLevel() == $this->config->get('aworld')){
