@@ -233,25 +233,24 @@ class SkyWars extends PluginBase implements Listener{
 
 public function onBlockPlace(BlockPlaceEvent $event){
         $ID = $event->getBlock()->getID(323); 
-        $neededplayerss = ($this->aplayers < $this->config->get('neededplayers') and $this->skywarsstarted == false){
-        if(this->config->get('neededplayers') and this->skywarsstarted == false);
+        $neededplayerss = $this->aplayers < $this->config->get('neededplayers') and $this->skywarsstarted == false);
         $players = count($event->getPlayer()->getLevel()->getPlayers());
         if($block instanceof Sign){
             $text = $block->getText();
-            if(strtolower($text[0]) == "sksign"($text[1] == "aworld"){
+            if(strtolower($text[0]) == "sksign"($text[1] == "aworld","bworld","cworld"){
                 $text[0] = "[SkywarsPe]";
                 $text[1] = "aworld|a/b/c";
-                $text[2] = "$players|Max 6";
+                $text[2] = "$players/6";
                 $text[3] = "$skywarsstarted";
-                if($skywarsstarted == true);
+                if($neededplayerss == true);
                 $text[3] = "Currently not joinable"
-                if($skywarsstarted == false) and neededplayers == false);
+                if($neededplayerss == false);
                 $text[3] = "JOINABLE")
             }
             $block->scheduleUpdate();
             return true;
 $event->getPlayer->hasPermission("skywars.createsign") || !$event->getPlayer()->hasPermission("skywars")){
-$event->setCancelled(true);
+$event->setCancelled();
         }
 }
 	public function onPlayerInteract(PlayerInteractEvent $event){
