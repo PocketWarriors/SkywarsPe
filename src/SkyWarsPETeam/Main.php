@@ -193,7 +193,8 @@ class SkyWars extends PluginBase implements Listener{
 			                if($this->aplayers => $this->config->get('neededplayers') and $this->skywarsstarted == false){                              
                                         $this->startCheck = microtime(true);
                                         $ct = $this->checkTime();
-                                        $sender->sendMessage("[SkywarsPe]There is".$ct."time left until game begins
+                                        $sender->sendMessage("[SkywarsPe]There is".$ct."time left until game begins");
+                                        break;
 					case "left":
 						if($sender->hasPermission("skywars.command.left") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
 							if($sender->getLevel() == $this->config->get('aworld')){
