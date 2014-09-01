@@ -245,7 +245,7 @@ public function onBlockPlace(BlockPlaceEvent $event){
                 if($skywarsstarted == true);
                 $text[3] = "Currently not joinable"
                 if($skywarsstarted == false) and neededplayers == false);
-                $text[3] = "JOIN NOW")
+                $text[3] = "JOINABLE")
             }
             $block->scheduleUpdate();
             return true;
