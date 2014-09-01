@@ -48,6 +48,14 @@ commands:
    description: "sets the 4th position were the player spawns"
    usage: "/skpod8"
    permission: skywars.setspawn.pod8
+  skclassclaim:
+   description: "claim a class"
+   usage: "/skcassclaim <classname>"
+   permission: skywars
+  skboughtclasses
+   description: "list the bought classes"
+   usage: "/skboughtclasses <classname>"
+   permission: skywars
 permissions:
   skywarshelp:
     description: "display a screen of all the Skywars commands"
