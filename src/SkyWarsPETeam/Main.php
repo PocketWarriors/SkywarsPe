@@ -156,7 +156,8 @@ class SkyWars extends PluginBase implements Listener{
 						}
 					break;
 					case "stat":
-						//TODO
+					$this->points->get($player, array($deaths, $kills, $points));
+					$sender->sendMessage(.$player."has".$deaths."deaths,".$kills."kills and".$points."points");
 					break;
 					case "spawnpos":
 						if($sender->hasPermission("skywars.command.pos") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
