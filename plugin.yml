@@ -70,7 +70,7 @@ commands:
    description: "leave the skywars match"
    usage: "/sk exit or skywars exit"
    permission: skywars.commad.exit
-   aiases: "skywars exit"
+   aliases: "skywars exit"
   skiptime:
    description: "skip the timer to start the match"
    usage: "/skiptime"
