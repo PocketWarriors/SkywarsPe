@@ -231,8 +231,8 @@ class SkyWars extends PluginBase implements Listener{
 }
 
 public function onBlockPlace(BlockPlaceEvent $event){
-        $ID = $event->getBlock()->getID(); 
-        $neededplayers = ($this->aplayers < $this->config->get('neededplayers') and $this->skywarsstarted == false){
+        $ID = $event->getBlock()->getID(323); 
+        $neededplayerss = ($this->aplayers < $this->config->get('neededplayers') and $this->skywarsstarted == false){
         if(this->config->get('neededplayers') and this->skywarsstarted == false);
         $players = count($event->getPlayer()->getLevel()->getPlayers());
         $block = $event->getBlock();
@@ -240,7 +240,7 @@ public function onBlockPlace(BlockPlaceEvent $event){
             $text = $block->getText();
             if(strtolower($text[0]) == "sksign"($text[1] == "aworld"){
                 $text[0] = "[SkywarsPe]";
-                $text[1] = "aworld|abc";
+                $text[1] = "aworld|a/b/c";
                 $text[2] = "$players|Max 6";
                 $text[3] = "$skywarsstarted";
                 if($skywarsstarted == true);
@@ -260,9 +260,10 @@ $event->setCancelled(true);
                 if($block instanceof sign){
                 $text = $block->getText();
                 if(strtolower($text[0] == [SkywarsPe]); and ($text[3] = "JOINABLE");
+                if($neededplayerss = false)
 		$p->teleport($this->world = $this->config->get('aworld');
                 $event->getPlayer->hasPermission("skywars.createsign") || !$event->getPlayer()->hasPermission("skywars")){.             
-                $event->setcancelled(true);
+                $event->setcancelled();
                 return true;
 	}
 	      }else{
