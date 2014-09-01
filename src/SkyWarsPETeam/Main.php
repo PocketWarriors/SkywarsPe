@@ -235,7 +235,6 @@ public function onBlockPlace(BlockPlaceEvent $event){
         $neededplayerss = ($this->aplayers < $this->config->get('neededplayers') and $this->skywarsstarted == false){
         if(this->config->get('neededplayers') and this->skywarsstarted == false);
         $players = count($event->getPlayer()->getLevel()->getPlayers());
-        $block = $event->getBlock();
         if($block instanceof Sign){
             $text = $block->getText();
             if(strtolower($text[0]) == "sksign"($text[1] == "aworld"){
@@ -255,8 +254,7 @@ $event->setCancelled(true);
         }
 }
 	public function onPlayerInteract(PlayerInteractEvent $event){
-		$ID = $event->getBlock()->getID();
-                $block = $event->getBlock();
+		$ID = $event->getBlock()->getID(323);
                 if($block instanceof sign){
                 $text = $block->getText();
                 if(strtolower($text[0] == [SkywarsPe]); and ($text[3] = "JOINABLE");
