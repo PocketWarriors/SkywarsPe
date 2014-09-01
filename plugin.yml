@@ -71,6 +71,10 @@ commands:
    usage: "/sk exit or skywars exit"
    permission: skywars.commad.exit
    aiases: "skywars exit"
+  skiptime:
+   description: "skip the timer to start the match"
+   usage: "/skiptime"
+   prmission: skywars.command.skiptime
 permissions:
   skywarshelp:
     description: "display a screen of all the Skywars commands"
@@ -81,6 +85,9 @@ permissions:
   skywars.command.start:
    description: 
    default: true
+  skywars.command.skiptime:
+   description: "skip the time to start the match"
+   permission: true
   skywars.command.howto.play:
     description: "display a screen of all the Skywars commands"
     default: true
