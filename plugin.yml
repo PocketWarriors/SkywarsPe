@@ -56,10 +56,31 @@ commands:
    description: "list the bought classes"
    usage: "/skboughtclasses <classname>"
    permission: skywars
+  sk play:
+   description:
+   usage: "/sk play or /skywars play"
+   permission: skywars.command.start
+   aliases: "skywars play"
+  sk stat:
+   description: "show statistics"
+   usage: "/sk stat or /skywars stat"
+   permission: skywars
+   aliases: "skywars stat"
+  sk exit:
+   description: "leave the skywars match"
+   usage: "/sk exit or skywars exit"
+   permission: skywars.commad.exit
+   aiases: "skywars exit"
 permissions:
   skywarshelp:
     description: "display a screen of all the Skywars commands"
     default: true
+  skywars.command.exit:
+   description: "leave the match"
+   default: true
+  skywars.command.start:
+   description: 
+   default: true
   skywars.command.howto.play:
     description: "display a screen of all the Skywars commands"
     default: true
