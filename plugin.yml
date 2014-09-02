@@ -48,14 +48,14 @@ commands:
    description: "sets the 4th position were the player spawns"
    usage: "/skpod8"
    permission: skywars.setspawn.pod8
-  skclassclaim:
-   description: "claim a class"
-   usage: "/skcassclaim <classname>"
-   permission: skywars
-  skboughtclasses
-   description: "list the bought classes"
-   usage: "/skboughtclasses <classname>"
-   permission: skywars
+ # skclassclaim:
+ #  description: "claim a class"
+ #  usage: "/skcassclaim <classname>"
+ #  permission: skywars
+ # skboughtclasses
+ #  description: "list the bought classes"
+ #  usage: "/skboughtclasses <classname>"
+ #  permission: skywars
   sk play:
    description:
    usage: "/sk play or /skywars play"
@@ -74,7 +74,17 @@ commands:
   skiptime:
    description: "skip the timer to start the match"
    usage: "/skiptime"
-   prmission: skywars.command.skiptime
+   permission: skywars.command.skiptime
+  sk checktime:
+   description: "check the time until the match starts"
+   usage: "/sk checktime or /skywars checktime"
+   permission: skywars.command
+   aliases: "skywars checktime"
+  sk left:
+   description: "players left until the game begin"
+   usage: "/sk left"
+   permission: skywars
+   aliases: "skywars left"
 permissions:
   skywarshelp:
     description: "display a screen of all the Skywars commands"
