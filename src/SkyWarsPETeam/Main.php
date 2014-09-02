@@ -197,6 +197,8 @@ class SkyWars extends PluginBase implements Listener{
                                         $sender->sendMessage("[SkywarsPe]There is".$ct."time left until game begins");
                                         return true;
                                }else{
+                               	        $sender->sendMessage("[SkywarsPe] There is no such player");
+                               	        return true;
                                	     
                                         break;
 					case "left":
