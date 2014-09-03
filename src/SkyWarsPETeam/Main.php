@@ -35,6 +35,11 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
 use pocketmine\scheduler\PluginTask;
 
+
+
+class SkyWars extends PluginBase implements Listener{
+	
+
 /*Thes are dynamics array, I used them to store some info like: configs, if the game is started and so on.
 They can be called using $this->name*/
 public $skywarsstarted = false;
@@ -42,9 +47,6 @@ public $config;
 public $aplayers;
 //public $bplayers;
 //public $cplayers;
-
-
-class SkyWars extends PluginBase implements Listener{
 
 	public function onEnable(){
 		$this->getServer()->getPluginManager->registerEvents($this, $this); 
