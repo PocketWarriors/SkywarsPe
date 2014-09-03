@@ -112,8 +112,7 @@ public $aplayers;
         				$sender->sendMessage("You haven't the permission to run this command");
         			}
 			case "skywars" //will set aliases later in plugin.yml
-				$params = array_shift($args[0]);
-				switch($params){
+				switch($args[0]){
 					case "play":
 						if($sender->hasPermission("skywars.command.start") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
 							if($this->aplayers => $this->config->get('neededplayers') and $this->skywarsstarted == false){ //if players in the world are more or equal as the max players
