@@ -125,7 +125,7 @@ class SkyWars extends PluginBase implements Listener{
 								$n = $this->aplayers; //count the players and store in a variable
 								$spawn = $this->->config->get('spawns'[$n]); //no need to do + 1 on this, because arrays start counting form 0 // get the correct spawn place
 								$sender->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->config->get('aworld')); //teleport to it
-								$this->aplayers = $this->aworld + 1; //then add a player to the array
+								$this->aplayers = $this->aplayers + 1; //then add a player to the array
 								$sender->sendMessage("You have been teleported to the game world.")
       								if($this->aplayers == $this->config->get('neededplayers')){ //if the players became the same as neededplayers
       									$this->startGame($this->config->get('aworld')); //start the game
@@ -195,23 +195,6 @@ class SkyWars extends PluginBase implements Listener{
 							return true;
 						}
 					break;
-                                        case "checktime":
-			                if($sender->hasPermission("skywars.command.checktime") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
-			                if($this->aplayers => $this->config->get('neededplayers') and $this->skywarsstarted == false){                              
-                                        $this->startCheck = microtime(true);
-        	                        $this->getServer()->getSchedule(Timer($this), 1200);
-                                        $ct = $this->checkTime();
-                                       	if($sender->getLevel() == $this->config->get('lobby')){
-                                        $sender->sendMessage("[SkywarsPe]There is".$ct."time left until game begins");
-
-                                        return true;
-                               }else{
-                               	        $sender->sendMessage("[SkywarsPe] There is no such player");
-
-                               	        return true;
-                               	     
-                                                }
-                                        break;
 					case "left":
 						if($sender->hasPermission("skywars.command.left") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
 							if($sender->getLevel() == $this->config->get('aworld')){
@@ -253,46 +236,35 @@ class SkyWars extends PluginBase implements Listener{
 				$p->sendMessage("A player joined the game!");
 				$playersleft = $this->config->get('neededplayers') - $this->aplayers;
 				$p->sendMessage("Players left untill the game begin: ".$playersleft)
-  }
-}
-
-public function onBlockPlace(BlockPlaceEvent $event){
-        $ID = $event->getBlock()->getID(323); 
-        $neededplayerss = $this->aplayers < $this->config->get('neededplayers') and $this->skywarsstarted == false);
-        $players = count($event->getPlayer()->getLevel()->getPlayers());
-        if($block instanceof Sign){
-            $text = $block->getText();
-            if(strtolower($text[0]) == "sksign"($text[1] == "aworld","bworld","cworld"){
-                $text[0] = "[SkywarsPe]";
-                $text[1] = "aworld|a/b/c";
-                $text[2] = "$players/6";
-                $text[3] = "$skywarsstarted";
-                if($neededplayerss == true);
-                $text[3] = "Currently not joinable"
-                if($neededplayerss == false);
-                $text[3] = "JOINABLE")
-            }
-            $block->scheduleUpdate();
-            return true;
-$event->getPlayer->hasPermission("skywars.createsign") || !$event->getPlayer()->hasPermission("skywars")){
-$event->setCancelled();
-        }
-}
-	public function onPlayerInteract(PlayerInteractEvent $event){
-		$ID = $event->getBlock()->getID(323);
-                if($block instanceof sign){
-                $text = $block->getText();
-                if(strtolower($text[0] == [SkywarsPe]); and ($text[3] = "JOINABLE");
-                if($neededplayerss = false)
-		$p->teleport($this->world = $this->config->get('aworld');
-                $event->getPlayer->hasPermission("skywars.createsign") || !$event->getPlayer()->hasPermission("skywars")){.             
-                $event->setcancelled();
-                return true;
+  				}
+		}
 	}
-	      }else{
-	      	
-	      }
-		 return false;
+
+	public function onPlayerInteract(PlayerInteractEvent $event){
+		$player = $event->getPlayer();
+		$ID = $event->getBlock()->getID();
+                if($ID == 323 or $ID == 63 or $ID == 68){
+        		$tile = $event->getBlock()->getLevel()->getTile(new Vector3($event->getBlock()->getX(),$event->getBlock()->getY(),$event->getBlock()->getZ(),$event->getPlayer()->getLevel()));
+        		if($tile instanceof Sign){
+        			if($tile->gettext(0)=="[MiniGame]" and $tile->getText(1)=="Skywars" and $tile->gettext(3) == $this.>config->get('aworld')){
+        				if($this->aplayers => $this->config->get('neededplayers') and $this->skywarsstarted == false){ //if players in the world are more or equal as the max players
+						$player->sendMessage("The game is full"); // game full
+					}elseif($this->aplayers < $this->config->get('neededplayers') and $this->skywarsstarted == false){ //if player number is less than the max.
+						$n = $this->aplayers; //count the players and store in a variable
+						$spawn = $this->->config->get('spawns'[$n]); //no need to do + 1 on this, because arrays start counting form 0 // get the correct spawn place
+						$player->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->config->get('aworld')); //teleport to it
+						$this->aplayers = $this->aplayers + 1; //then add a player to the array
+						$player->sendMessage("You have been teleported to the game world.")
+      						if($this->aplayers == $this->config->get('neededplayers')){ //if the players became the same as neededplayers
+      							$this->startGame($this->config->get('aworld')); //start the game
+      						}
+					}elseif($this->skywarsstarted == true){ //if the game is already started
+                        			$player->sendMessage("The game is already started");
+        					
+        				}
+        			}	
+        		}
+        	}
 	}
         	
         public function onHurt(EntityDamageByEntityEvent $event){
