@@ -63,7 +63,7 @@ commands:
    aliases: "skywars play"
   sk stat:
    description: "show statistics"
-   usage: "/sk stat or /skywars stat"
+   usage: "/sk stat <player> or /skywars stat <player>"
    permission: skywars
    aliases: "skywars stat"
   sk exit:
@@ -78,7 +78,7 @@ commands:
   sk checktime:
    description: "check the time until the match starts"
    usage: "/sk checktime or /skywars checktime"
-   permission: skywars.command
+   permission: skywars.command.checktime
    aliases: "skywars checktime"
   sk left:
    description: "players left until the game begin"
