@@ -157,8 +157,15 @@ class SkyWars extends PluginBase implements Listener{
 						}
 					break;
 					case "stat":
+                                        if($sender->hasPermission("skywars.command.stat") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
 					$this->points->get($player, array($deaths, $kills, $points));
 					$sender->sendMessage(.$player."has".$deaths."deaths,".$kills."kills and".$points."points");
+                                }else{
+                               	        $sender->sendMessage("[SkywarsPe] There is no such player");
+
+                               	        return true;
+
+                                                }  
 					break;
 					case "spawnpos":
 						if($sender->hasPermission("skywars.command.pos") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
@@ -195,11 +202,14 @@ class SkyWars extends PluginBase implements Listener{
                                         $ct = $this->checkTime();
                                        	if($sender->getLevel() == $this->config->get('lobby')){
                                         $sender->sendMessage("[SkywarsPe]There is".$ct."time left until game begins");
+
                                         return true;
                                }else{
                                	        $sender->sendMessage("[SkywarsPe] There is no such player");
+
                                	        return true;
                                	     
+                                                }
                                         break;
 					case "left":
 						if($sender->hasPermission("skywars.command.left") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
