@@ -3,7 +3,7 @@ main: SkyWarsPETeam/Main
 version: 1.0.0beta
 api: [1.0.0]
 load: POSTWORLD
-authors: [luca28pet, WantedKillers, Jon]
+authors: [SkywarsPe Team(luca28pet, WantedKillers, Jon)]
 website: https://github.com/SkywarsPe/SkywarsPe
 
 commands:
