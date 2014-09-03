@@ -87,7 +87,7 @@ public $aplayers;
                    
                 )
             	));
-            	$this->points = new Config($this->getDataFolder()."config.yml", Config::YAML);
+            	$this->points = new Config($this->getDataFolder()."points.yml", Config::YAML);
             	$this->config->save();
             	$this->points->save();
             
