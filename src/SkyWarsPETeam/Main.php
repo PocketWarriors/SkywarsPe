@@ -1,13 +1,9 @@
 <?php
 
-// To do 1: Make a sign that shows how many people are in that match and tapping it will let u join unless it's full * done
-// To do 2: Add multiworld support!!!!!!! 3:
-// To do 3: add /sktime so players can see how much time is left until the game begins
-// To do 4: add if an 11th player joins it sends him in spectator mode
-// To do 5: add if 5 players wanna start they use /sktimeskip and the game will begin 10 seconds later ☆ done
 
-// To do 6: add that instead of the players having to break the block itl'l auto break whats under them when the time begins :)
-// To do 7: add a config seting so everything can be properly saved and edited☆ done
+// To do 1: Add multiworld support!!!!!!! 3:
+// To do 2: add if an 11th player joins it sends him in spectator mode
+
 
 
 /*Commands: /skhowto */
@@ -159,15 +155,26 @@ public $aplayers;
 						}
 					break;
 					case "stat":
-                                        if($sender->hasPermission("skywars.command.stat") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
-					$this->points->get($player, array($deaths, $kills, $points));
-					$sender->sendMessage(.$player."has".$deaths."deaths,".$kills."kills and".$points."points");
-                                }else{
-                               	        $sender->sendMessage("[SkywarsPe] There is no such player");
-
-                               	        return true;
-
-                                                }  
+                                        	if($sender->hasPermission("skywars.command.stat") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
+                                        		if(!(isset($args[1]))){
+                                        			$player = $sender->getName();
+								$deaths = $this->points->get($player[0]);
+								$kills = $this->points->get($player[1]);
+								$points = $this->points->get($player[2]);
+								$sender->sendMessage("You have ".$deaths." deaths, ".$kills." kills and ".$points." points.");
+								return true;
+                                        		}else{
+                                        			$player = $args[1];
+								$deaths = $this->points->get($player[0]);
+								$kills = $this->points->get($player[1]);
+								$points = $this->points->get($player[2]);
+								$sender->sendMessage($player." has ".$deaths." deaths, ".$kills." kills and ".$points." points.");
+								return true;
+                                        		}
+                                		}else{
+                               	        		$sender->sendMessage("You haven't the permission to run this command.");
+							return true;
+                               	        	}  
 					break;
 					case "spawnpos":
 						if($sender->hasPermission("skywars.command.pos") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
@@ -285,18 +292,18 @@ public $aplayers;
         		if($cause instanceof EntityDamageByEntityEvent){ //TODO: we should test this, I don't know if works
 				$killer = $cause->getDamager();
 				if($killer instanceof Player){
-					$this->addKill($killer);
+					$this->addKill($killer->getName());
 				}
 			}
         		if($this->aplayers <= 1){ //if only 1 player is left
-        			foreach($this->getServer->getLevel($this->config->get('aworld'))->getPlayers() as $p){ //detects the winner
+        			foreach($this->getServer()->getLevel($this->config->get('aworld'))->getPlayers() as $p){ //detects the winner
         				$p->sendMessage("You won the match!");
         				$p->sendMessage("The game has finished, you will be teleported to the lobby.");
         				$p->teleport($this->getServer()->getLevel($this->config->get('lobby'))->getSafeSpawn()); //teleport to the lobby
         				$points = $this->points->get($p[2]) + $this->config->get('points-per-match'); //get points and add
         				$deaths = $this->points->get($player[0]); //get the victim's deaths, add one and store in a variable
        					$kills = $this->points->get($player[1]); //get the players kills and store in a var
-        				$this->config->set($p, array($deaths), array($kills), array($points));
+        				$this->config->set($p, array($deaths, $kills, $points));
         				$this->stopGame($this->config->get('aworld')); //stop the game
         			}
         		}
@@ -306,7 +313,7 @@ public $aplayers;
         public function onChat(PlayerChatEvent $event){
         	$user = event->getPlayer->getName();
         	if($this->config->get('chat-format') == true){
-        		$event->setformat("[".$this->points->get($user2])."]<".$user.">: ".$event->getMessage());
+        		$event->setformat("[".$this->points->get($user[2])."]<".$user.">: ".$event->getMessage());
         	}
         }
         
@@ -317,7 +324,7 @@ public $aplayers;
 			$x = $p->getGroundX; 
 			$y = $p->getGroundY; //get the ground coordinates
 			$z = $p->getGroundZ; //these are needed to break the glass under the player
-			//TODO set an air block at $x, $y, $z, to automatically break the block under the player when the game start
+			server::getInstance()->getLevel($level)->setBlock(new Vector3($x,$y,$z), Block::get(0, 0));
 			$p->sendMessage("The game starts NOW!! Good luck!");
 			$p->sendMessage("You can exit using: /sk exit");
 		}
