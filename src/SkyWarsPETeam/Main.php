@@ -254,12 +254,12 @@ public $aplayers;
                 if($ID == 323 or $ID == 63 or $ID == 68){
         		$tile = $event->getBlock()->getLevel()->getTile(new Vector3($event->getBlock()->getX(),$event->getBlock()->getY(),$event->getBlock()->getZ(),$event->getPlayer()->getLevel()));
         		if($tile instanceof Sign){
-        			if($tile->gettext(0)=="[MiniGame]" and $tile->getText(1)=="Skywars" and $tile->gettext(3) == $this.>config->get('aworld')){
+        			if($tile->gettext(0)=="[MiniGame]" and $tile->getText(1)=="Skywars" and $tile->gettext(3) == $this->config->get('aworld')){
         				if($this->aplayers => $this->config->get('neededplayers') and $this->skywarsstarted == false){ //if players in the world are more or equal as the max players
 						$player->sendMessage("The game is full"); // game full
 					}elseif($this->aplayers < $this->config->get('neededplayers') and $this->skywarsstarted == false){ //if player number is less than the max.
 						$n = $this->aplayers; //count the players and store in a variable
-						$spawn = $this->->config->get('spawns'[$n]); //no need to do + 1 on this, because arrays start counting form 0 // get the correct spawn place
+						$spawn = $this->config->get('spawns'[$n]); //no need to do + 1 on this, because arrays start counting form 0 // get the correct spawn place
 						$player->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->config->get('aworld')); //teleport to it
 						$this->aplayers = $this->aplayers + 1; //then add a player to the array
 						$player->sendMessage("You have been teleported to the game world.")
