@@ -48,6 +48,7 @@ public $aplayers;
                 "lobby" => 'world',
                 "sksign" => 'sign',
                 "aworld" => 'swaworld',
+                "spectatorspawn" => array(128, 70, 128),
                 "neededplayers" => '6' //this is just for test
                 "spawns" => array(
                     	array(
@@ -150,6 +151,7 @@ public $aplayers;
         									}else{
         										$p->sendMessage("The match hs finished, thanks for watching.");
         										$p->teleport($this->getServer()->getLevel($this->config->get('lobby'))->getSafeSpawn());
+        										$p->setGameMode(0);
         									}
         										$this->stopGame($this->config->get('aworld')); //stop the game
         								}
@@ -233,7 +235,7 @@ public $aplayers;
 						if($sender->hasPermission("skywars.command.see") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
 							$sender->sendMessage("You will join a match as a spectator");
 							$sender->setGamemode(3);
-							$spawn = $this->->config->get('spectatorspawn'[$n]); //no need to do + 1 on this, because arrays start counting form 0 // get the correct spawn place
+							$spawn = $this->->config->get('spectatorspawn'); //no need to do + 1 on this, because arrays start counting form 0 // get the correct spawn place
 							$sender->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->config->get('aworld'));
 						}else{
 							$sender->sendMessage("You haven't the permission to run this command.");
@@ -332,6 +334,7 @@ public $aplayers;
         				}else{
         					$p->sendMessage("The match hs finished, thanks for watching.");
         					$p->teleport($this->getServer()->getLevel($this->config->get('lobby'))->getSafeSpawn());
+        					$p->setGameMode(0);
         				}
         				$this->stopGame($this->config->get('aworld')); //stop the game
         			}
