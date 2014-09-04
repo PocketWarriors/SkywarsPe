@@ -1,12 +1,6 @@
 <?php
 
-
 // To do 1: Add multiworld support!!!!!!! 3:
-// To do 2: add if an 11th player joins it sends him in spectator mode
-
-
-
-/*Commands: /skhowto */
 
 namespace SkyWars;
 
@@ -114,7 +108,7 @@ public $aplayers;
 			case "skywars" //will set aliases later in plugin.yml
 				switch($args[0]){
 					case "play":
-						if($sender->hasPermission("skywars.command.start") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
+						if($sender->hasPermission("skywars.command.play") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
 							if($this->aplayers => $this->config->get('neededplayers') and $this->skywarsstarted == false){ //if players in the world are more or equal as the max players
 								$sender->sendMessage("The game is full"); // game full
 								return true;
@@ -143,6 +137,23 @@ public $aplayers;
 								$this->aplayers = $this->aplayers - 1; //remove 1 to the array
 								$sender->teleport($this->getServer()->getLevel($this->config->get('lobby'))->getSafeSpawn); //teleport to the lobby
 								$sender->sendMessage("You left the game.");
+								if($this->aplayers <= 1){ //if only 1 player is left
+        								foreach($this->getServer()->getLevel($this->config->get('aworld'))->getPlayers() as $p){ //detects the winner
+        									if($p->getGameMode() == 0){
+        										$p->sendMessage("You won the match!");
+        										$p->sendMessage("The game has finished, you will be teleported to the lobby.");
+        										$p->teleport($this->getServer()->getLevel($this->config->get('lobby'))->getSafeSpawn()); //teleport to the lobby
+        										$points = $this->points->get($p[2]) + $this->config->get('points-per-match'); //get points and add
+        										$deaths = $this->points->get($player[0]); //get the victim's deaths, add one and store in a variable
+       											$kills = $this->points->get($player[1]); //get the players kills and store in a var
+        										$this->config->set($p, array($deaths, $kills, $points));
+        									}else{
+        										$p->sendMessage("The match hs finished, thanks for watching.");
+        										$p->teleport($this->getServer()->getLevel($this->config->get('lobby'))->getSafeSpawn());
+        									}
+        										$this->stopGame($this->config->get('aworld')); //stop the game
+        								}
+        							}
 								return true;
 							}else{
 								$sender->sendMessage("You are not in the SkyWars world.");
@@ -218,6 +229,17 @@ public $aplayers;
 							return true;
 						}
 					break;
+					case "see":
+						if($sender->hasPermission("skywars.command.see") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
+							$sender->sendMessage("You will join a match as a spectator");
+							$sender->setGamemode(3);
+							$spawn = $this->->config->get('spectatorspawn'[$n]); //no need to do + 1 on this, because arrays start counting form 0 // get the correct spawn place
+							$sender->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->config->get('aworld'));
+						}else{
+							$sender->sendMessage("You haven't the permission to run this command.");
+							return true;
+						}
+					break;
 				}
 		}
 	}
@@ -235,6 +257,9 @@ public $aplayers;
 		if($event->getPlayer->getLevel() == $this->config->get('lobby') and !$event->getPlayer->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){
 			$event->setCancelled();
 			$event->getPlayer()->sendMessage("You don't have permission to edit the lobby.");
+		}
+		if($event->getPlayer->getLevel() == $this->config->get('aworld') and $event->getPlayer->getGameMode() == 3){
+			$event->setCancelled();
 		}
 	}
 	
@@ -296,13 +321,18 @@ public $aplayers;
 			}
         		if($this->aplayers <= 1){ //if only 1 player is left
         			foreach($this->getServer()->getLevel($this->config->get('aworld'))->getPlayers() as $p){ //detects the winner
-        				$p->sendMessage("You won the match!");
-        				$p->sendMessage("The game has finished, you will be teleported to the lobby.");
-        				$p->teleport($this->getServer()->getLevel($this->config->get('lobby'))->getSafeSpawn()); //teleport to the lobby
-        				$points = $this->points->get($p[2]) + $this->config->get('points-per-match'); //get points and add
-        				$deaths = $this->points->get($player[0]); //get the victim's deaths, add one and store in a variable
-       					$kills = $this->points->get($player[1]); //get the players kills and store in a var
-        				$this->config->set($p, array($deaths, $kills, $points));
+        				if($p->getGameMode() == 0){
+        					$p->sendMessage("You won the match!");
+        					$p->sendMessage("The game has finished, you will be teleported to the lobby.");
+        					$p->teleport($this->getServer()->getLevel($this->config->get('lobby'))->getSafeSpawn()); //teleport to the lobby
+        					$points = $this->points->get($p[2]) + $this->config->get('points-per-match'); //get points and add
+        					$deaths = $this->points->get($player[0]); //get the victim's deaths, add one and store in a variable
+       						$kills = $this->points->get($player[1]); //get the players kills and store in a var
+        					$this->config->set($p, array($deaths, $kills, $points));
+        				}else{
+        					$p->sendMessage("The match hs finished, thanks for watching.");
+        					$p->teleport($this->getServer()->getLevel($this->config->get('lobby'))->getSafeSpawn());
+        				}
         				$this->stopGame($this->config->get('aworld')); //stop the game
         			}
         		}
@@ -320,12 +350,14 @@ public $aplayers;
 	public function startGame($level){
 		$this->skywarsstarted == true; //put the array to true
 		foreach($this->getServer()->getLevel($level)->getPlayers() as $p){ //get every single player in the level
-			$x = $p->getGroundX; 
-			$y = $p->getGroundY; //get the ground coordinates
-			$z = $p->getGroundZ; //these are needed to break the glass under the player
-			server::getInstance()->getLevel($level)->setBlock(new Vector3($x,$y,$z), Block::get(0, 0));
-			$p->sendMessage("The game starts NOW!! Good luck!");
-			$p->sendMessage("You can exit using: /sk exit");
+			if($p->getGameMode() == 0){
+				$x = $p->getGroundX; 
+				$y = $p->getGroundY; //get the ground coordinates
+				$z = $p->getGroundZ; //these are needed to break the glass under the player
+				server::getInstance()->getLevel($level)->setBlock(new Vector3($x,$y,$z), Block::get(0, 0));
+				$p->sendMessage("The game starts NOW!! Good luck!");
+				$p->sendMessage("You can exit using: /sk exit");
+			}
 		}
 		return true;
 	}
