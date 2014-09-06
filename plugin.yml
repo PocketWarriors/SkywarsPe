@@ -101,14 +101,13 @@ permissions:
   skywars.command.howto.play:
     description: "display a screen of all the Skywars commands"
     default: true
-    children:
-     skywars.command:
+  skywars.command:
       description: "display a screen of all the Skywars commands"
       default: true
-     skywars.command.pos:
+  skywars.command.pos:
       description: "display a screen of all the Skywars commands"
       default: true
-     skywars:
+  skywars:
       description: "display a screen of all the Skywars commands"
       default: true
   skywars.editlobby:
