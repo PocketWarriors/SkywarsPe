@@ -249,7 +249,7 @@ public $aplayers;
 
 	
 	public function onBlockBreak(BlockBreakEvent $event){
-		if($event->getPlayer->getLevel() == $this->config->get('lobby') and !$event->getPlayer->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){ //if level is lobby and player hasn't the permission to modify it
+		if($event->getPlayer()->getLevel() == $this->config->get('lobby') and !$event->getPlayer()->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){ //if level is lobby and player hasn't the permission to modify it
 			$event->setCancelled(); // cancel the event
 			$event->getPlayer()->sendMessage("You don't have permission to edit the lobby.");
 		}
