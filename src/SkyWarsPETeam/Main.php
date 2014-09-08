@@ -256,7 +256,7 @@ public $aplayers;
 	}
 	
 	public function onBlockPlace(BlockPlaceEvent $event){
-		if($event->getPlayer->getLevel() == $this->config->get('lobby') and !$event->getPlayer->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){
+		if($event->getPlayer()->getLevel() == $this->config->get('lobby') and !$event->getPlayer->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){
 			$event->setCancelled();
 			$event->getPlayer()->sendMessage("You don't have permission to edit the lobby.");
 		}
@@ -309,17 +309,20 @@ public $aplayers;
         	}
         }
         
-        public  function onDeath(EntityDeathEvent $event){
+        public  function onDeath(PlayerDeathEvent $event){
         	if($event->getEntity()->getLevel() == $this->config->get('aworld')){ //if in skywars aworld
         		$this->aplayers = $this->aplayers -1; //remove a player
         		$victim = $event->getEntity()->getName();
         		$this->addDeath($victim);
         		$cause = $event->getEntity()->getLastDamageCause();
-        		if($cause instanceof EntityDamageByEntityEvent){ //TODO: we should test this, I don't know if works
+        		if($cause instanceof EntityDamageByEntityEvent){
 				$killer = $cause->getDamager();
 				if($killer instanceof Player){
 					$this->addKill($killer->getName());
+					$event->setDeathMessage($victim."[".$this->config->get($victim[2])."] was killed by ".$killer->getName()."[".$this->config->get($killer->getName()[2])."]. ".$this->config->get('aworld'['neededplayers']) - $this->aplayers." players remaining");
 				}
+			}else{
+					$event->setDeathMessage($victim."[".$this->config->get($victim[2])."] died.");
 			}
         		if($this->aplayers <= 1){ //if only 1 player is left
         			foreach($this->getServer()->getLevel($this->config->get('aworld'))->getPlayers() as $p){ //detects the winner
