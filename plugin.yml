@@ -4,142 +4,50 @@ version: 1.0.0beta
 api: [1.0.0]
 load: POSTWORLD
 authors: [SkywarsPe Team(luca28pet, WantedKillers, Jon)]
-website: https://github.com/SkywarsPe/SkywarsPe
+website: https://github.com/PocketWarriors/SkywarsPe
 
 commands:
-  skywarshowto:
-   description: "gives a brief tutorial on how to play skywars"
-   usage: "/skywarshowto"
-   aliases: "skywars"
-   permission: skywars.howto.play
-  skywarshelp:
-   description: "displays a screen of all the Skywars commands"
-   usage: "/skywarshelp"
-   permission: skywars.howto.play
-  skpod1:
-   description: "sets the 1st position were the player spawns"
-   usage: "/skpod1"
-   permission: skywars.setspawn.pod1
-  skpod2:
-   description: "sets the 2nd position were the player spawns"
-   usage: "/skpod2"
-   permission: skywars.setspawn.pod2
-  skpod3:
-   description: "sets the 3rd position were the player spawns"
-   usage: "/skpod3"
-   permission: skywars.setspawn.pod3
-  skpod4:
-   description: "sets the 4th position were the player spawns"
-   usage: "/skpod4"
-   permission: skywars.setspawn.pod4
-  skpod5:
-   description: "sets the 1st position were the player spawns"
-   usage: "/skpod5"
-   permission: skywars.setspawn.pod5
-  skpod6:
-   description: "sets the 2nd position were the player spawns"
-   usage: "/skpod2"
-   permission: skywars.setspawn.pod6
-  skpod7:
-   description: "sets the 3rd position were the player spawns"
-   usage: "/skpod7"
-   permission: skywars.setspawn.pod7
-  skpod8:
-   description: "sets the 4th position were the player spawns"
-   usage: "/skpod8"
-   permission: skywars.setspawn.pod8
- # skclassclaim:
- #  description: "claim a class"
- #  usage: "/skcassclaim <classname>"
- #  permission: skywars
- # skboughtclasses
- #  description: "list the bought classes"
- #  usage: "/skboughtclasses <classname>"
- #  permission: skywars
-  sk play:
-   description:
-   usage: "/sk play or /skywars play"
-   permission: skywars.command.start
-   aliases: "skywars play"
-  sk stat:
-   description: "show statistics"
-   usage: "/sk stat <player> or /skywars stat <player>"
-   permission: skywars
-   aliases: "skywars stat"
-  sk exit:
-   description: "leave the skywars match"
-   usage: "/sk exit or skywars exit"
-   permission: skywars.commad.exit
-   aliases: "skywars exit"
-  skiptime:
-   description: "skip the timer to start the match"
-   usage: "/skiptime"
-   permission: skywars.command.skiptime
-  sk checktime:
-   description: "check the time until the match starts"
-   usage: "/sk checktime or /skywars checktime"
-   permission: skywars.command.checktime
-   aliases: "skywars checktime"
-  sk left:
-   description: "players left until the game begin"
-   usage: "/sk left"
-   permission: skywars
-   aliases: "skywars left"
+ skywarshowto:
+  description: "gives a brief tutorial on how to play skywars"
+  usage: "/skywarshowto"
+  aliases: "skywars"
+  permission: skywars.howto
+ skywars:
+  description: "the main skywars command"
+  usage: "/skywars <play|exit>"
 permissions:
-  skywarshelp:
-    description: "display a screen of all the Skywars commands"
-    default: true
-  skywars.command.exit:
-   description: "leave the match"
-   default: true
-  skywars.command.start:
-   description: 
-   default: true
-  skywars.command.skiptime:
-   description: "skip the time to start the match"
-   permission: true
-  skywars.command.howto.play:
-    description: "display a screen of all the Skywars commands"
-    default: true
-  skywars.command:
-      description: "display a screen of all the Skywars commands"
+ skywars:
+  description: "Allows to access all sw features"
+  default: op
+  children:
+   skywars.editlobby:
+    description: "Edit the lobby"
+    default: op
+   skywars.command:
+    description: "Runs all commands"
+    default.op
+    children:
+     skywars.command.play:
+      description: "Plays a skywars game"
       default: true
-  skywars.command.pos:
-      description: "display a screen of all the Skywars commands"
+     skywars.command.exit:
+      description: "Exit from a game using a command"
       default: true
-  skywars:
-      description: "display a screen of all the Skywars commands"
+     skywars.command.left:
+      description: "See how many players are left till the game begin"
       default: true
-  skywars.editlobby:
-    description: "edit the lobby"
-    default: op
-  skywars.setspawn.world:
-    description: "sets the world in which the players will spawn in"
-    default: op
-  skywars.setspawn.skpod1:
-    description: "sets the world in which the players will spawn in"
-    default: op
-   skywars.setspawn.skpod2:
-    description: "sets the world in which the players will spawn in"
-    default: op
-  skywars.setspawn.skpod3:
-    description: "sets the world in which the players will spawn in"
-    default: op
-  skywars.setspawn.skpod4:
-    description: "sets the world in which the players will spawn in"
-    default: op
-  skywars.setspawn.skpod5:
-    description: "sets the world in which the players will spawn in"
-    default: op
-   skywars.setspawn.skpod6:
-    description: "sets the world in which the players will spawn in"
-    default: op
-  skywars.setspawn.skpod7:
-    description: "sets the world in which the players will spawn in"
-    default: op
-  skywars.setspawn.skpod8:
-    description: "sets the world in which the players will spawn in"
-    default: op
-  skywars.event.skbypass:
-    description: "bypass the time"
-    default: op
+     skywars.command.stat:
+      description: "See players stat"
+      default: true
+     skywars.command.pos:
+      description: "Sets a new spawnpoint"
+      default: op
+     skywars.command.skiptime:
+      description: "Skip the time before a match"
+      default: op
+     skywars.command.see:
+      description: "See a match as a spectator"
+      default: true
+ # skywars.event.skbypass:
+  #  description: "bypass the time"
+   # default: op
