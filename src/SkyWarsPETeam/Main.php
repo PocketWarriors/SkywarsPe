@@ -83,8 +83,15 @@ public $aplayers;
                 )
             	));
             	$this->points = new Config($this->getDataFolder()."points.yml", Config::YAML);
+            	$this->chestitems = new config($this->getDataFolder()."chestitems.yml", Config::YAML);
+            	"chestitems" => array(         
+            		    array(
+            		    	   
+            		       $chest =	chest1
+            		       $itemids = [2] , [0] , [9] //Just examples not sure how to do this
             	$this->config->save();
             	$this->points->save();
+            	$this->chestitems->save();
             
 	}
 
@@ -242,6 +249,15 @@ public $aplayers;
 							return true;
 						}
 					break;
+					case "capturechest"
+					        if($sender->hasPermission("skywars.command.capturechest") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
+					        $player = $event->getPlayer();
+					        $ID = $event->getBlock()->getID();
+					        if($ID == 323 or $ID == 63 or $ID == 68){
+					        $tile = $event->getBlock()->getLevel()->getTile(new Vector3($event->getBlock()->getX(),$event->getBlock()->getY(),$event->getBlock()->getZ(),$event->getPlayer()->getLevel()));
+					        if($tile instanceof chest){
+					        	
+					        }
 				}
 		}
 	}
