@@ -89,6 +89,11 @@ public $aplayers;
             		    	   
             		       $chest =	chest1
             		       $itemids = [2] , [0] , [9] //Just examples not sure how to do this
+            		       $chestposition1 = 
+            		           )
+            		          
+            		       )     
+            		       ));
             	$this->config->save();
             	$this->points->save();
             	$this->chestitems->save();
@@ -253,10 +258,11 @@ public $aplayers;
 					        if($sender->hasPermission("skywars.command.capturechest") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
 					        $player = $event->getPlayer();
 					        $ID = $event->getBlock()->getID();
-					        if($ID == 323 or $ID == 63 or $ID == 68){
-					        $tile = $event->getBlock()->getLevel()->getTile(new Vector3($event->getBlock()->getX(),$event->getBlock()->getY(),$event->getBlock()->getZ(),$event->getPlayer()->getLevel()));
+					        if($ID == 5){
+					        $tile = $event->getBlock()->getLevel()->getTile(new Vector3($event->getBlock()->getX(),$event->getBlock()->getY(),$event->getBlock()->getZ(),$event->getPlayer()->getLevel())) $this->config->set("chestpositin1")
 					        if($tile instanceof chest){
-					        	
+					        $chest->setItem($slot, new Air()); 	
+					        $chest1 = $this->config->set("chestitems")
 					        }
 				}
 		}
