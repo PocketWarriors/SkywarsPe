@@ -35,6 +35,7 @@ They can be called using $this->name*/
 public $skywarsstarted = false;
 public $config;
 public $aplayers;
+public $inchestedit;
 //public $bplayers;
 //public $cplayers;
 
@@ -246,8 +247,9 @@ public $aplayers;
 					break;
 					case "capturechest"
 					        if($sender->hasPermission("skywars.command.capturechest") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
-					        $player = $event->getplayer();
-					
+					                if($sender instanceof Player){
+					                $this->c[$sender->getName()] = true;
+	                $sender->sendMessage("Touch a chest to capture contents.");
 					    
 					        }
 				}
