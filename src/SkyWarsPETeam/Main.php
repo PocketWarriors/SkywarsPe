@@ -84,16 +84,6 @@ public $aplayers;
             	));
             	$this->points = new Config($this->getDataFolder()."points.yml", Config::YAML);
             	$this->chestitems = new config($this->getDataFolder()."chestitems.yml", Config::YAML);
-            	"chestitems" => array(         
-            		    array(
-            		    	   
-            		       $chest =	chest1
-            		       $itemids = [2] , [0] , [9] //Just examples not sure how to do this
-            		       $chestposition1 = 
-            		           )
-            		          
-            		       )     
-            		       ));
             	$this->config->save();
             	$this->points->save();
             	$this->chestitems->save();
