@@ -246,13 +246,9 @@ public $aplayers;
 					break;
 					case "capturechest"
 					        if($sender->hasPermission("skywars.command.capturechest") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
-					        $player = $event->getPlayer();
-					        $ID = $event->getBlock()->getID();
-					        if($ID == 5){
-					        $tile = $event->getBlock()->getLevel()->getTile(new Vector3($event->getBlock()->getX(),$event->getBlock()->getY(),$event->getBlock()->getZ(),$event->getPlayer()->getLevel())) $this->config->set("chestpositin1")
-					        if($tile instanceof chest){
-					        $chest->setItem($slot, new Air()); 	
-					        $chest1 = $this->config->set("chestitems")
+					        $player = $event->getplayer();
+					
+					    
 					        }
 				}
 		}
