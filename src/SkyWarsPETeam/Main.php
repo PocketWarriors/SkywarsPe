@@ -413,4 +413,13 @@ public $inchestedit;
         	}
         	return true;
 	}
+	public function onPlayerInteract(PlayerInteractEvent $event){
+        if(isset($this->inchestedit[$event->getPlayer()->getName()]); 	
+        $ID = $event->getBlock->getID();
+        if($ID = 54){
+        $chestpositon = $event->getBlock()->getLevel()->getTile(new Vector3($event->getBlock()->getX(),$event->getBlock()->getY(),$event->getBlock()->getZ(),$event->getPlayer()->getLevel()));
+        $chestname = this->getChestname();
+        $player->getInventory();
+        $chestitems = $inventory->getHotbarSlotItemIDs($ItemIDs);
+	}
 }
