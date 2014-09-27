@@ -423,5 +423,9 @@ public $inchestedit;
         $player->getInventory();
         $chestitems = $inventory->getHotbarSlotItemIDs($ItemIDs);
         $this->chestitems->set($chest, array($chestname, $chestposition, $chestitems));
+        if($this->skywarsstarted = true;
+        $this->chestitems->get($chests, array($chestname, $chestposition, $chestitems));
+        $this->chest->set($chestitems);
+        
 	}
 }
