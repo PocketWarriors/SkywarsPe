@@ -248,7 +248,7 @@ public $inchestedit;
 					case "capturechest"
 					        if($sender->hasPermission("skywars.command.capturechest") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
 					                if($sender instanceof Player){
-					                $this->inchestcapture[$sender->getName()] = true;
+					                $this->inchestedit[$sender->getName()] = true;
 					                            $sender->sendMessage("Touch a chest to capture contents.");
 					                }
 	                                                else{
