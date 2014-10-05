@@ -422,10 +422,13 @@ public $inchestedit;
         $chestname = this->getChestname();
         $player->getInventory();
         $chestitems = $inventory->getHotbarSlotItemIDs($ItemIDs);
+        if(!$this->chest->exist($chests)){
         $this->chestitems->set($chest, array($chestname, $chestposition, $chestitems));
         if($this->skywarsstarted = true;
         $this->chestitems->get($chests, array($chestname, $chestposition, $chestitems));
-        $this->chest->set($chestitems);
-        
+        $this->chests->set($chestitems);
+        }else{
+         $sender->sendMessage("[SkywarsPe] This chest is already in the skywars config file please choose another chest");
+        }
 	}
 }
