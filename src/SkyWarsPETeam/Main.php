@@ -50,37 +50,13 @@ public $inchestedit;
                 "sksign" => 'sign',
                 "aworld" => 'swaworld',
                 "spectatorspawn" => array(128, 70, 128),
-                "neededplayers" => '6' //this is just for test
+                "neededplayers" => '6',
                 "spawns" => array(
-                    	array(
-                        	272,
-                        	0,
-                        	1
-                    	),
-                	array(
-                		260,
-                        	0,
-                        	5
-                    	),
-			array(
-                        	260,
-                        	0,
-                        	5
-                       
-                       ),
-                       array(
-                       	        280,
-                       	        0,
-                       	        5
-                       	        
-                      ),
-                      array(
-                      	        292,
-                      	        0,
-                      	        5
-                      	        
-                    )
-                   
+                    	array(272,0,1),
+                	array(260,0,5),
+			array(260,0,5),
+                	array(280,0,5),
+                	array(292,0,5)
                 )
             	));
             	$this->points = new Config($this->getDataFolder()."points.yml", Config::YAML);
