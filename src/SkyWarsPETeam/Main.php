@@ -264,18 +264,18 @@ public $inchestedit;
 
 	
 	public function onBlockBreak(BlockBreakEvent $event){
-		if($event->getPlayer()->getLevel() == $this->config->get('lobby') and !$event->getPlayer()->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){ //if level is lobby and player hasn't the permission to modify it
+		if($event->getPlayer()->getLevel()->getName() == $this->config->get('lobby') and !$event->getPlayer()->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){ //if level is lobby and player hasn't the permission to modify it
 			$event->setCancelled(); // cancel the event
 			$event->getPlayer()->sendMessage("You don't have permission to edit the lobby.");
 		}
 	}
 	
 	public function onBlockPlace(BlockPlaceEvent $event){
-		if($event->getPlayer()->getLevel() == $this->config->get('lobby') and !$event->getPlayer->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){
+		if($event->getPlayer()->getLevel()->getName() == $this->config->get('lobby') and !$event->getPlayer->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){
 			$event->setCancelled();
 			$event->getPlayer()->sendMessage("You don't have permission to edit the lobby.");
 		}
-		if($event->getPlayer->getLevel() == $this->config->get('aworld') and $event->getPlayer->getGameMode() == 3){
+		if($event->getPlayer()->getLevel()->getName() == $this->config->get('aworld') and $event->getPlayer->getGameMode() == 3){
 			$event->setCancelled();
 		}
 	}
