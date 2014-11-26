@@ -301,7 +301,7 @@ public $inchestedit;
         }
         
         public  function onDeath(PlayerDeathEvent $event){
-        	if($event->getEntity()->getLevel() == $this->config->get('aworld')){ //if in skywars aworld
+        	if($event->getEntity()->getPlayer()->getLevel()->getName() == $this->config->get('aworld')){ //if in skywars aworld
         		$this->aplayers = $this->aplayers -1; //remove a player
         		$victim = $event->getEntity()->getName();
         		$this->addDeath($victim);
@@ -351,7 +351,7 @@ public $inchestedit;
 				$x = $p->getGroundX; 
 				$y = $p->getGroundY; //get the ground coordinates
 				$z = $p->getGroundZ; //these are needed to break the glass under the player
-				server::getInstance()->getLevel($level)->setBlock(new Vector3($x,$y,$z), Block::get(0, 0));
+				Server::getInstance()->getLevelByName($level)->setBlock(new Vector3($x,$y,$z), Block::get(0, 0));
 				$p->sendMessage("The game starts NOW!! Good luck!");
 				$p->sendMessage("You can exit using: /sk exit");
 			}
@@ -362,6 +362,10 @@ public $inchestedit;
 	public function stopGame($level){
 		$this->skywarsstarted == false; //put the array to false
 		$this->aplayers == 0; //restore players
+		$x ='';
+		$y='';
+		$z='';
+		Server::getInstance()->getLevelByName($level)->setBlock(new Vector3($x,$y,$z), Block::get(20, 0), true); //add block glass 
 		//TODO: restore the original map
 		return true;
 	}
