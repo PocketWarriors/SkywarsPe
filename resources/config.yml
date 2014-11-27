@@ -1,0 +1,27 @@
+===
+chat-format: true
+lobby: world
+sksign: sign
+aworld: swaworld
+spectatorspawn:
+  - 128
+  - 70
+  - 128
+neededplayers: "6"
+spawns:
+  - - 272
+    - 0
+    - 1
+  - - 260
+    - 0
+    - 5
+  - - 260
+    - 0
+    - 5
+  - - 280
+    - 0
+    - 5
+  - - 292
+    - 0
+    - 5
+---
