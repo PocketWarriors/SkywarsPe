@@ -2,7 +2,7 @@
 
 // To do 1: Add multiworld support!!!!!!! 3:
 
-namespace SkyWars;
+namespace SkyWarsPETeam;
 
 use pocketmine\Server;
 use pocketmine\command\Command;
