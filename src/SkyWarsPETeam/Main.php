@@ -44,32 +44,17 @@ public $inchestedit;
         	$this->getLogger()->info(TextFormat::DARK_RED . "SKY" . TextFormat::DARK_BLUE . "WARS" . TextFormat::AQUA . "plugin by SkyWarsPETeam is Loading...");
         	$this->getServer()->getSchedule()->scheduleRepeatingTask(new Timer($this), 1200); //this runs every second, but maybe will change in every minute
         	//TODO: create a class for the timer
-        	$this->config = new Config($this->getDataFolder()."config.yml", Config::YAML, array(
-        	"chat-format" => true,
-                "lobby" => 'world',
-                "sksign" => 'sign',
-                "aworld" => 'swaworld',
-                "spectatorspawn" => array(128, 70, 128),
-                "neededplayers" => '6',
-                "spawns" => array(
-                    	array(272,0,1),
-                	array(260,0,5),
-			array(260,0,5),
-                	array(280,0,5),
-                	array(292,0,5)
-                )
-            	));
+        	$this->saveDefaultConfig();
             	$this->points = new Config($this->getDataFolder()."points.yml", Config::YAML);
             	$this->chestitems = new config($this->getDataFolder()."chestitems.yml", Config::YAML);
-            	$this->config->save();
+            	$this->getConfig()->save();
             	$this->points->save();
             	$this->chestitems->save();
-            
 	}
 
 	public function onDisable(){
         	$this->getLogger()->info(TextFormat::GOLD . "Skywars plugin by SkyWarsPETeam is disabling...");
-        	$this->config->save();
+        	$this->getConfig()->save();
         }
 	
 	public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
@@ -89,17 +74,17 @@ public $inchestedit;
 				switch($args[0]){
 					case "play":
 						if($sender->hasPermission("skywars.command.play") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
-							if($this->aplayers => $this->config->get('neededplayers') and $this->skywarsstarted == false){ //if players in the world are more or equal as the max players
+							if($this->aplayers => $this->getConfig()->get('neededplayers') and $this->skywarsstarted == false){ //if players in the world are more or equal as the max players
 								$sender->sendMessage("The game is full"); // game full
 								return true;
-							}elseif($this->aplayers < $this->config->get('neededplayers') and $this->skywarsstarted == false){ //if player number is less than the max.
+							}elseif($this->aplayers < $this->getConfig()->get('neededplayers') and $this->skywarsstarted == false){ //if player number is less than the max.
 								$n = $this->aplayers; //count the players and store in a variable
-								$spawn = $this->->config->get('spawns'[$n]); //no need to do + 1 on this, because arrays start counting form 0 // get the correct spawn place
-								$sender->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->config->get('aworld')); //teleport to it
+								$spawn = $this->getConfig()->get('spawns'[$n]); //no need to do + 1 on this, because arrays start counting form 0 // get the correct spawn place
+								$sender->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->getConfig()->get('aworld')); //teleport to it
 								$this->aplayers = $this->aplayers + 1; //then add a player to the array
 								$sender->sendMessage("You have been teleported to the game world.")
-      								if($this->aplayers == $this->config->get('neededplayers')){ //if the players became the same as neededplayers
-      									$this->startGame($this->config->get('aworld')); //start the game
+      								if($this->aplayers == $this->getConfig()->get('neededplayers')){ //if the players became the same as neededplayers
+      									$this->startGame($this->getConfig()>get('aworld')); //start the game
       								} 
       								return true;
 							}elseif($this->skywarsstarted == true){ //if the game is already started
@@ -113,26 +98,26 @@ public $inchestedit;
 					break;
 					case "exit":
 						if($sender->hasPermission("skywars.command.exit") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
-							if($sender->getLevel() == $this->config->get('aworld')){ //if the level of the sender is a skywars one
+							if($sender->getLevel() == $this->getConfig()->get('aworld')){ //if the level of the sender is a skywars one
 								$this->aplayers = $this->aplayers - 1; //remove 1 to the array
-								$sender->teleport($this->getServer()->getLevel($this->config->get('lobby'))->getSafeSpawn); //teleport to the lobby
+								$sender->teleport($this->getServer()->getLevel($this->getConfig()>get('lobby'))->getSafeSpawn); //teleport to the lobby
 								$sender->sendMessage("You left the game.");
 								if($this->aplayers <= 1){ //if only 1 player is left
-        								foreach($this->getServer()->getLevel($this->config->get('aworld'))->getPlayers() as $p){ //detects the winner
+        								foreach($this->getServer()->getLevel($this->getConfig()->get('aworld'))->getPlayers() as $p){ //detects the winner
         									if($p->getGameMode() == 0){
         										$p->sendMessage("You won the match!");
         										$p->sendMessage("The game has finished, you will be teleported to the lobby.");
         										$p->teleport($this->getServer()->getLevel($this->config->get('lobby'))->getSafeSpawn()); //teleport to the lobby
-        										$points = $this->points->get($p[2]) + $this->config->get('points-per-match'); //get points and add
+        										$points = $this->points->get($p[2]) + $this->getConfig()->get('points-per-match'); //get points and add
         										$deaths = $this->points->get($player[0]); //get the victim's deaths, add one and store in a variable
        											$kills = $this->points->get($player[1]); //get the players kills and store in a var
-        										$this->config->set($p, array($deaths, $kills, $points));
+        										$this->getConfig()->set($p, array($deaths, $kills, $points));
         									}else{
         										$p->sendMessage("The match hs finished, thanks for watching.");
-        										$p->teleport($this->getServer()->getLevel($this->config->get('lobby'))->getSafeSpawn());
+        										$p->teleport($this->getServer()->getLevel($this->getConfig()->get('lobby'))->getSafeSpawn());
         										$p->setGameMode(0);
         									}
-        										$this->stopGame($this->config->get('aworld')); //stop the game
+        										$this->stopGame($this->getConfig()->get('aworld')); //stop the game
         								}
         							}
 								return true;
@@ -172,7 +157,7 @@ public $inchestedit;
 							$x = $sender->getX();
 							$y = $sender->getY(); //get coordinates and store in variables
 							$z = $sender->getZ();
-							$this->config->add('spawns', array($x, $y, $z)); //add the variables to the config
+							$this->getConfig()->add('spawns', array($x, $y, $z)); //add the variables to the config
 							$sender->sendMessage("Spawn position set to: ".$x.", ".$y.", ".$z.", level: ".$sender->getLevel());
 							return true;
 						}else{
@@ -197,8 +182,8 @@ public $inchestedit;
 					break;
 					case "left":
 						if($sender->hasPermission("skywars.command.left") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
-							if($sender->getLevel() == $this->config->get('aworld')){
-								$playersleft = $this->config->get('neededplayers') - $this->aplayers;
+							if($sender->getLevel() == $this->getConfig()->get('aworld')){
+								$playersleft = $this->getConfig()->get('neededplayers') - $this->aplayers;
 								$sender->sendMessage("Players left untill the game begin: ".$playersleft);
 								return true;
 							}else{
@@ -214,8 +199,8 @@ public $inchestedit;
 						if($sender->hasPermission("skywars.command.see") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
 							$sender->sendMessage("You will join a match as a spectator");
 							$sender->setGamemode(3);
-							$spawn = $this->->config->get('spectatorspawn'); //no need to do + 1 on this, because arrays start counting form 0 // get the correct spawn place
-							$sender->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->config->get('aworld'));
+							$spawn = $this->getConfig()->get('spectatorspawn'); //no need to do + 1 on this, because arrays start counting form 0 // get the correct spawn place
+							$sender->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->getConfig()->get('aworld'));
 						}else{
 							$sender->sendMessage("You haven't the permission to run this command.");
 							return true;
@@ -240,27 +225,27 @@ public $inchestedit;
 
 	
 	public function onBlockBreak(BlockBreakEvent $event){
-		if($event->getPlayer()->getLevel()->getName() == $this->config->get('lobby') and !$event->getPlayer()->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){ //if level is lobby and player hasn't the permission to modify it
+		if($event->getPlayer()->getLevel()->getName() == $this->getConfig()->get('lobby') and !$event->getPlayer()->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){ //if level is lobby and player hasn't the permission to modify it
 			$event->setCancelled(); // cancel the event
 			$event->getPlayer()->sendMessage("You don't have permission to edit the lobby.");
 		}
 	}
 	
 	public function onBlockPlace(BlockPlaceEvent $event){
-		if($event->getPlayer()->getLevel()->getName() == $this->config->get('lobby') and !$event->getPlayer->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){
+		if($event->getPlayer()->getLevel()->getName() == $this->getConfig()->get('lobby') and !$event->getPlayer->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){
 			$event->setCancelled();
 			$event->getPlayer()->sendMessage("You don't have permission to edit the lobby.");
 		}
-		if($event->getPlayer()->getLevel()->getName() == $this->config->get('aworld') and $event->getPlayer->getGameMode() == 3){
+		if($event->getPlayer()->getLevel()->getName() == $this->getConfig()->get('aworld') and $event->getPlayer->getGameMode() == 3){
 			$event->setCancelled();
 		}
 	}
 	
 	public function onLevelChange(EntityLevelChangeEvent $event){
-		if($event->getTarget() == $this->config->get('aworld')){
-			foreach($this->getServer()->getLevel($this->config->get('aworld'))->getPlayers() as $p){
+		if($event->getTarget() == $this->getConfig()->get('aworld')){
+			foreach($this->getServer()->getLevel($this->getConfig()->get('aworld'))->getPlayers() as $p){
 				$p->sendMessage("A player joined the game!");
-				$playersleft = $this->config->get('neededplayers') - $this->aplayers;
+				$playersleft = $this->getConfig()->get('neededplayers') - $this->aplayers;
 				$p->sendMessage("Players left untill the game begin: ".$playersleft)
   				}
 		}
@@ -272,17 +257,17 @@ public $inchestedit;
                 if($ID == 323 or $ID == 63 or $ID == 68){
         		$tile = $event->getBlock()->getLevel()->getTile(new Vector3($event->getBlock()->getX(),$event->getBlock()->getY(),$event->getBlock()->getZ(),$event->getPlayer()->getLevel()));
         		if($tile instanceof Sign){
-        			if($tile->gettext(0)=="[MiniGame]" and $tile->getText(1)=="Skywars" and $tile->gettext(3) == $this->config->get('aworld')){
-        				if($this->aplayers => $this->config->get('neededplayers') and $this->skywarsstarted == false){ //if players in the world are more or equal as the max players
+        			if($tile->gettext(0)=="[MiniGame]" and $tile->getText(1)=="Skywars" and $tile->gettext(3) == $this->getConfig()->get('aworld')){
+        				if($this->aplayers => $this->getConfig()->get('neededplayers') and $this->skywarsstarted == false){ //if players in the world are more or equal as the max players
 						$player->sendMessage("The game is full"); // game full
 					}elseif($this->aplayers < $this->config->get('neededplayers') and $this->skywarsstarted == false){ //if player number is less than the max.
 						$n = $this->aplayers; //count the players and store in a variable
-						$spawn = $this->config->get('spawns'[$n]); //no need to do + 1 on this, because arrays start counting form 0 // get the correct spawn place
+						$spawn = $this->getConfig()->get('spawns'[$n]); //no need to do + 1 on this, because arrays start counting form 0 // get the correct spawn place
 						$player->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->config->get('aworld')); //teleport to it
 						$this->aplayers = $this->aplayers + 1; //then add a player to the array
 						$player->sendMessage("You have been teleported to the game world.")
-      						if($this->aplayers == $this->config->get('neededplayers')){ //if the players became the same as neededplayers
-      							$this->startGame($this->config->get('aworld')); //start the game
+      						if($this->aplayers == $this->getConfig()->get('neededplayers')){ //if the players became the same as neededplayers
+      							$this->startGame($this->getConfig()->get('aworld')); //start the game
       						}
 					}elseif($this->skywarsstarted == true){ //if the game is already started
                         			$player->sendMessage("The game is already started");
@@ -294,14 +279,14 @@ public $inchestedit;
 	}
         	
         public function onHurt(EntityDamageByEntityEvent $event){
-        	if($event->getEntity()->getLevel() == $this->config->get('lobby')){
+        	if($event->getEntity()->getLevel() == $this->getConfig()->get('lobby')){
         		$event->setCancelled(true); //disable pvp in the lobby
         		$event->getEntity()->sendMessage("You cannot hurt players in the lobby.");
         	}
         }
         
         public  function onDeath(PlayerDeathEvent $event){
-        	if($event->getEntity()->getPlayer()->getLevel()->getName() == $this->config->get('aworld')){ //if in skywars aworld
+        	if($event->getEntity()->getPlayer()->getLevel()->getName() == $this->getConfig()->get('aworld')){ //if in skywars aworld
         		$this->aplayers = $this->aplayers -1; //remove a player
         		$victim = $event->getEntity()->getName();
         		$this->addDeath($victim);
@@ -310,17 +295,17 @@ public $inchestedit;
 				$killer = $cause->getDamager();
 				if($killer instanceof Player){
 					$this->addKill($killer->getName());
-					$event->setDeathMessage($victim."[".$this->config->get($victim[2])."] was killed by ".$killer->getName()."[".$this->config->get($killer->getName()[2])."]. ".$this->config->get('aworld'['neededplayers']) - $this->aplayers." players remaining");
+					$event->setDeathMessage($victim."[".$this->getConfig()->get($victim[2])."] was killed by ".$killer->getName()."[".$this->getConfig()->get($killer->getName()[2])."]. ".$this->getConfig()->get('aworld'['neededplayers']) - $this->aplayers." players remaining");
 				}
 			}else{
-					$event->setDeathMessage($victim."[".$this->config->get($victim[2])."] died.");
+					$event->setDeathMessage($victim."[".$this->getConfig()->get($victim[2])."] died.");
 			}
         		if($this->aplayers <= 1){ //if only 1 player is left
-        			foreach($this->getServer()->getLevel($this->config->get('aworld'))->getPlayers() as $p){ //detects the winner
+        			foreach($this->getServer()->getLevel($this->getConfig()->get('aworld'))->getPlayers() as $p){ //detects the winner
         				if($p->getGameMode() == 0){
         					$p->sendMessage("You won the match!");
         					$p->sendMessage("The game has finished, you will be teleported to the lobby.");
-        					$p->teleport($this->getServer()->getLevel($this->config->get('lobby'))->getSafeSpawn()); //teleport to the lobby
+        					$p->teleport($this->getServer()->getLevel($this->getConfig()->get('lobby'))->getSafeSpawn()); //teleport to the lobby
         					$points = $this->points->get($p[2]) + $this->config->get('points-per-match'); //get points and add
         					$deaths = $this->points->get($player[0]); //get the victim's deaths, add one and store in a variable
        						$kills = $this->points->get($player[1]); //get the players kills and store in a var
@@ -412,3 +397,4 @@ public $inchestedit;
         }
 	}
 }
+    
