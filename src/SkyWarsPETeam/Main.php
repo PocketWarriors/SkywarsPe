@@ -113,7 +113,7 @@ public $inchestedit;
        											$kills = $this->points->get($player[1]); //get the players kills and store in a var
         										$this->getConfig()->set($p, array($deaths, $kills, $points));
         									}else{
-        										$p->sendMessage("The match hs finished, thanks for watching.");
+        										$p->sendMessage("The match has finished, thanks for watching.");
         										$p->teleport($this->getServer()->getLevel($this->getConfig()->get('lobby'))->getSafeSpawn());
         										$p->setGameMode(0);
         									}
