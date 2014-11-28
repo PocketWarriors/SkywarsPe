@@ -27,7 +27,7 @@ use pocketmine\scheduler\PluginTask;
 
 
 
-class SkyWars extends PluginBase implements Listener{
+class Main extends PluginBase implements Listener{
 	
 
 /*Thes are dynamics array, I used them to store some info like: configs, if the game is started and so on.
