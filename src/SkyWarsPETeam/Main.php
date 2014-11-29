@@ -73,7 +73,7 @@ public $inchestedit;
 				switch($args[0]){
 					case "play":
 						if($sender->hasPermission("skywars.command.play") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
-							if($this->aplayers => $this->getConfig()->get('neededplayers') and $this->skywarsstarted == false){ //if players in the world are more or equal as the max players
+							if($this->aplayers -> $this->getConfig()->get('neededplayers') and $this->skywarsstarted == false){ //if players in the world are more or equal as the max players
 								$sender->sendMessage("The game is full"); // game full
 								return true;
 							}elseif($this->aplayers < $this->getConfig()->get('neededplayers') and $this->skywarsstarted == false){ //if player number is less than the max.
