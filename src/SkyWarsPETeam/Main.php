@@ -14,7 +14,10 @@ use pocketmine\item\Item;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerDeathEvent;
-use pocketmine\event\entity\EntityLevelChangeEvent;
+use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
+use 
+pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\EventExecutor;
@@ -40,21 +43,18 @@ public $inchestedit;
 //public $cplayers;
 
 	public function onEnable(){
-		$this->getServer()->getPluginManager->registerEvents($this, $this); 
-        	$this->getLogger()->info(TextFormat::DARK_RED . "SKY" . TextFormat::DARK_BLUE . "WARS" . TextFormat::AQUA . "plugin by SkyWarsPETeam is Loading...");
-        	$this->getServer()->getSchedule()->scheduleRepeatingTask(new Timer($this), 1200); //this runs every second, but maybe will change in every minute
+		$this->getServer()->getPluginManager->registerEvents($this, $this);
+        	$this->getServer()->getScheduler()->scheduleRepeatingTask(new Timer($this), 1200); //this runs every second, but maybe will change in every minute
         	//TODO: create a class for the timer
         	$this->saveDefaultConfig();
             	$this->points = new Config($this->getDataFolder()."points.yml", Config::YAML);
             	$this->chestitems = new config($this->getDataFolder()."chestitems.yml", Config::YAML);
-            	$this->getConfig()->save();
-            	$this->points->save();
-            	$this->chestitems->save();
 	}
 
 	public function onDisable(){
-        	$this->getLogger()->info(TextFormat::GOLD . "Skywars plugin by SkyWarsPETeam is disabling...");
         	$this->getConfig()->save();
+        	$this->points->save();
+        	$this->chestitems->save();
         }
 	
 	public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
@@ -70,7 +70,7 @@ public $inchestedit;
         			}else{
         				$sender->sendMessage("You haven't the permission to run this command");
         			}
-			case "skywars" //will set aliases later in plugin.yml
+			case "skywars": //will set aliases later in plugin.yml
 				switch($args[0]){
 					case "play":
 						if($sender->hasPermission("skywars.command.play") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
@@ -242,6 +242,7 @@ public $inchestedit;
 	}
 	
 	public function onLevelChange(EntityLevelChangeEvent $event){
+        	if(!($event->getEntity() instanceof Player)) return;
 		if($event->getTarget() == $this->getConfig()->get('aworld')){
 			foreach($this->getServer()->getLevel($this->getConfig()->get('aworld'))->getPlayers() as $p){
 				$p->sendMessage("A player joined the game!");
@@ -252,6 +253,7 @@ public $inchestedit;
 	}
 
 	public function onPlayerInteract(PlayerInteractEvent $event){
+        	$this->onPlayerInteract2($event);
 		$player = $event->getPlayer();
 		$ID = $event->getBlock()->getID();
                 if($ID == 323 or $ID == 63 or $ID == 68){
@@ -278,10 +280,11 @@ public $inchestedit;
         	}
 	}
         	
-        public function onHurt(EntityDamageByEntityEvent $event){
+        public function onHurt(EntityDamageEvent $event){
+        	if(!($event instanceof EntityDamageByEntityEvent) or !($event->getDamager() instanceof Player)) return;
         	if($event->getEntity()->getLevel() == $this->getConfig()->get('lobby')){
         		$event->setCancelled(true); //disable pvp in the lobby
-        		$event->getEntity()->sendMessage("You cannot hurt players in the lobby.");
+        		$event->getDamager()->sendMessage("You cannot hurt players in the lobby.");
         	}
         }
         
@@ -378,7 +381,7 @@ public $inchestedit;
         	}
         	return true;
 	}
-	public function onPlayerInteract(PlayerInteractEvent $event){
+	public function onPlayerInteract2(PlayerInteractEvent $event, $pocketmineIgnoreMe = null){
         if(isset($this->inchestedit[$event->getPlayer()->getName()]); 	
         $ID = $event->getBlock->getID();
         if($ID = 54){
