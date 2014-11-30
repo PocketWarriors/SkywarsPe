@@ -330,6 +330,7 @@ public $inchestedit;
         	}
         }
         
+        
         /*Defining my function to start the game*/
 	public function startGame($level){
 		$this->skywarsstarted == true; //put the array to true
@@ -349,12 +350,22 @@ public $inchestedit;
 	public function stopGame($level){
 		$this->skywarsstarted == false; //put the array to false
 		$this->aplayers == 0; //restore players
-		$x ='';
-		$y='';
-		$z='';
-		Server::getInstance()->getLevelByName($level)->setBlock(new Vector3($x,$y,$z), Block::get(20, 0), true); //add block glass 
+		//$x ='';
+		//$y='';
+		//$z='';
+		//Server::getInstance()->getLevelByName($level)->setBlock(new Vector3($x,$y,$z), Block::get(20, 0), true); //add block glass 
 		//TODO: restore the original map
+		$originalMap = $this->getConfig()->get('aworld');
+		$zipPath = $this->getServer()->getDataPath("worlds/$originalMap/");
+		$this->extractWorld($zipPath, $level);
 		return true;
+	}
+	
+	        public function extractWorld($zipPath, $worldName){
+    		$zip = new \ZipArchive;
+    		$errId = $zip->open($zipPath); // TODO: if errored, check $errId
+		$zip->extractTo($this->getServer()->getDataPath() . "worlds/$worldName/");
+    		$zip->close();
 	}
 	
 	public function addDeath($player){
