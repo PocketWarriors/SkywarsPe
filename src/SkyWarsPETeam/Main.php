@@ -408,6 +408,6 @@ public $inchestedit;
         }else{
          $sender->sendMessage("[SkywarsPe] This chest is already in the skywars config file please choose another chest");
         }
-	}
+    }
 }
     
