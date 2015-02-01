@@ -41,7 +41,7 @@ private $aplayers = 0;
 //public $cplayers;
 
 	public function onEnable(){
-		$this->getServer()->getPluginManager->registerEvents($this, $this);
+		$this->getServer()->getPluginManager()->registerEvents($this, $this);
         	$this->saveDefaultConfig();
             	$this->points = new Config($this->getDataFolder()."points.yml", Config::YAML);
 	}
