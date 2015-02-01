@@ -223,7 +223,7 @@ public $inchestedit;
 	
 
 	
-	public function onBlockBreak(BlockBreakEvent $event){
+	public function onBlockBreak(BlockBreakEvent $event){// error is here: unexpected public_ function
 		if($event->getPlayer()->getLevel()->getName() == $this->getConfig()->get('lobby') and !$event->getPlayer()->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){ //if level is lobby and player hasn't the permission to modify it
 			$event->setCancelled(); // cancel the event
 			$event->getPlayer()->sendMessage("You don't have permission to edit the lobby.");
