@@ -252,7 +252,7 @@ private $aplayers = 0;
 						$spawn = $this->getConfig()->get('spawns')[$this->aplayers]; //no need to do + 1 on this, because arrays start counting form 0 // get the correct spawn place
 						$player->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->getServer()->getLevelByName($this->config->get('aworld')))); //teleport to it
 						$this->aplayers = $this->aplayers + 1; //then add a player to the array
-						$player->sendMessage("You have been teleported to the game world.")
+						$player->sendMessage("You have been teleported to the game world.");
       						if($this->aplayers == $this->getConfig()->get('neededplayers')){ //if the players became the same as neededplayers
       							$this->startGame($this->getConfig()->get('aworld')); //start the game
       						}
