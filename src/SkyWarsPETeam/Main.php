@@ -35,8 +35,8 @@ class Main extends PluginBase implements Listener{
 /*Thes are dynamics array, I used them to store some info like: configs, if the game is started and so on.
 They can be called using $this->name*/
 private $skywarsstarted = false;
-private $config;
-private $aplayers;
+private $points;
+private $aplayers = 0;
 //public $bplayers;
 //public $cplayers;
 
@@ -66,6 +66,7 @@ private $aplayers;
         			}
 			case "skywars": 
 			case "sw":  //same as setting aliases in plugin.yml, both cmds (skywars & sw) are usable
+			case "sk":
 				switch($args[0]){
 					case "play":
 						if($sender->hasPermission("skywars.command.play") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
@@ -257,7 +258,6 @@ private $aplayers;
       						}
 					}elseif($this->skywarsstarted == true){ //if the game is already started
                         			$player->sendMessage("The game is already started");
-        					
         				}
         			}	
         		}
