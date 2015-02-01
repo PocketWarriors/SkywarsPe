@@ -228,8 +228,7 @@ private $aplayers = 0;
 	}
 	
 	public function onLevelChange(EntityLevelChangeEvent $event){
-        	if(!($event->getEntity() instanceof Player)) return;
-		if($event->getTarget()->getName() == $this->getConfig()->get('aworld')){
+		if($event->getEntity() instanceof Player and $event->getTarget()->getName() == $this->getConfig()->get('aworld')){
 			foreach($this->getServer()->getLevelByName($this->getConfig()->get('aworld'))->getPlayers() as $p){
 				$p->sendMessage("A player joined the game!");
 				$playersleft = $this->getConfig()->get('neededplayers') - $this->aplayers;
