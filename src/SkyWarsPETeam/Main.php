@@ -199,7 +199,7 @@ public $inchestedit;
 							$sender->sendMessage("You will join a match as a spectator");
 							$sender->setGamemode(3);
 							$spawn = $this->getConfig()->get('spectatorspawn'); //no need to do + 1 on this, because arrays start counting form 0 // get the correct spawn place
-							$sender->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->getConfig()->get('aworld'));
+							$sender->teleport(new Position($spawn[0], $spawn[1], $spawn[2]) < $this->getConfig()->get('aworld'));
 						}else{
 							$sender->sendMessage("You haven't the permission to run this command.");
 							return true;
