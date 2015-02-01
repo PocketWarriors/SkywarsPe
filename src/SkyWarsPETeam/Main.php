@@ -61,10 +61,10 @@ public $inchestedit;
 			case "skywarshowto":
         			if($sender->hasPermission("skywars.command.howto") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")) { 
 					$sender->sendMessage("----How To Play skywars----");
-                                        $sender->sendMessage("/sk checktime = check the time left");
 					$sender->sendMessage("/sk play = start a game");
 					$sender->sendMessage("/sk exit = exit from a game");
 					$sender->sendMessage("/sk stat [player] = get a player stats");
+					$sender->sendMessage("/sk skiptime = skip the waiting time");
 					return true;
         			}else{
         				$sender->sendMessage("You haven't the permission to run this command");
@@ -80,7 +80,7 @@ public $inchestedit;
 							}elseif($this->aplayers < $this->getConfig()->get('neededplayers') and $this->skywarsstarted == false){ //if player number is less than the max.
 								$n = $this->aplayers; //count the players and store in a variable
 								$spawn = $this->getConfig()->get('spawns')[$n]; //no need to do + 1 on this, because arrays start counting form 0 // get the correct spawn place
-								$sender->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->getConfig()->get('aworld'))); //teleport to it
+								$sender->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->getServer()->getLevelByName($this->getConfig()->get('aworld')))); //teleport to it
 								$this->aplayers = $this->aplayers + 1; //then add a player to the array
 								$sender->sendMessage("You have been teleported to the game world.");
       								if($this->aplayers == $this->getConfig()->get('neededplayers')){ //if the players became the same as neededplayers
@@ -200,13 +200,13 @@ public $inchestedit;
 							$sender->sendMessage("You will join a match as a spectator");
 							$sender->setGamemode(3); //Actually, this will crash mcpe I think.
 							$spawn = $this->getConfig()->get('spectatorspawn');
-							$sender->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->getConfig()->get('aworld')));
+							$sender->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->getServer()->getLevelbyName($this->getConfig()->get('aworld'))));
 						}else{
 							$sender->sendMessage("You haven't the permission to run this command.");
 							return true;
 						}
 					break;
-					case "capturechest"
+/*					case "capturechest"
 					        if($sender->hasPermission("skywars.command.capturechest") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
 					                if($sender instanceof Player){
 					                $this->inchestedit[$sender->getName()] = true;
@@ -215,7 +215,7 @@ public $inchestedit;
 	                                                	    $sender->sendMessage("Please run command in game.");
 	                                                }
 	                                           return true;     
-					         }
+					         }*/
 				}
 				
 		}
@@ -223,7 +223,7 @@ public $inchestedit;
 	
 
 	
-	public function onBlockBreak(BlockBreakEvent $event){// error is here: unexpected public_ function
+	public function onBlockBreak(BlockBreakEvent $event){
 		if($event->getPlayer()->getLevel()->getName() == $this->getConfig()->get('lobby') and !$event->getPlayer()->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){ //if level is lobby and player hasn't the permission to modify it
 			$event->setCancelled(); // cancel the event
 			$event->getPlayer()->sendMessage("You don't have permission to edit the lobby.");
@@ -231,19 +231,19 @@ public $inchestedit;
 	}
 	
 	public function onBlockPlace(BlockPlaceEvent $event){
-		if($event->getPlayer()->getLevel()->getName() == $this->getConfig()->get('lobby') and !$event->getPlayer->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){
+		if($event->getPlayer()->getLevel()->getName() == $this->getConfig()->get('lobby') and !$event->getPlayer()->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){
 			$event->setCancelled();
 			$event->getPlayer()->sendMessage("You don't have permission to edit the lobby.");
 		}
-		if($event->getPlayer()->getLevel()->getName() == $this->getConfig()->get('aworld') and $event->getPlayer->getGameMode() == 3){
+		if($event->getPlayer()->getLevel()->getName() == $this->getConfig()->get('aworld') and $event->getPlayer()->getGameMode() == 3){
 			$event->setCancelled();
 		}
 	}
 	
 	public function onLevelChange(EntityLevelChangeEvent $event){
         	if(!($event->getEntity() instanceof Player)) return;
-		if($event->getTarget() == $this->getConfig()->get('aworld')){
-			foreach($this->getServer()->getLevel($this->getConfig()->get('aworld'))->getPlayers() as $p){
+		if($event->getTarget()->getName() == $this->getConfig()->get('aworld')){
+			foreach($this->getServer()->getLevelByName($this->getConfig()->get('aworld'))->getPlayers() as $p){
 				$p->sendMessage("A player joined the game!");
 				$playersleft = $this->getConfig()->get('neededplayers') - $this->aplayers;
 				$p->sendMessage("Players left untill the game begin: ".$playersleft)
@@ -252,11 +252,11 @@ public $inchestedit;
 	}
 
 	public function onPlayerInteract(PlayerInteractEvent $event){
-        	$this->onPlayerInteract2($event);
+        	//$this->onPlayerInteract2($event);
 		$player = $event->getPlayer();
-		$ID = $event->getBlock()->getID();
+		$ID = $event->getBlock()->getId();
                 if($ID == 323 or $ID == 63 or $ID == 68){
-        		$tile = $event->getBlock()->getLevel()->getTile(new Vector3($event->getBlock()->getX(),$event->getBlock()->getY(),$event->getBlock()->getZ(),$event->getPlayer()->getLevel()));
+        		$tile = $event->getBlock()->getLevel()->getTile(new Vector3($event->getBlock()->getX(),$event->getBlock()->getY(),$event->getBlock()->getZ()));
         		if($tile instanceof Sign){
         			if($tile->gettext(0)=="[MiniGame]" and $tile->gettext(1)=="Skywars" and $tile->gettext(3) == $this->getConfig()->get('aworld')){
         				if($this->aplayers >= $this->getConfig()->get('neededplayers') and $this->skywarsstarted == false){ //if players in the world are more or equal as the max players
@@ -264,7 +264,7 @@ public $inchestedit;
 					}elseif($this->aplayers < $this->config->get('neededplayers') and $this->skywarsstarted == false){ //if player number is less than the max.
 						$n = $this->aplayers; //count the players and store in a variable
 						$spawn = $this->getConfig()->get('spawns')[$n]; //no need to do + 1 on this, because arrays start counting form 0 // get the correct spawn place
-						$player->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->config->get('aworld')); //teleport to it
+						$player->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->getServer()->getLevelByName($this->config->get('aworld')))); //teleport to it
 						$this->aplayers = $this->aplayers + 1; //then add a player to the array
 						$player->sendMessage("You have been teleported to the game world.")
       						if($this->aplayers == $this->getConfig()->get('neededplayers')){ //if the players became the same as neededplayers
@@ -281,7 +281,7 @@ public $inchestedit;
         	
         public function onHurt(EntityDamageEvent $event){
         	if(!($event instanceof EntityDamageByEntityEvent) or !($event->getDamager() instanceof Player)) return;
-        	if($event->getEntity()->getLevel() == $this->getConfig()->get('lobby')){
+        	if($event->getEntity()->getLevel()->getName() == $this->getConfig()->get('lobby')){
         		$event->setCancelled(true); //disable pvp in the lobby
         		$event->getDamager()->sendMessage("You cannot hurt players in the lobby.");
         	}
@@ -303,18 +303,18 @@ public $inchestedit;
 					$event->setDeathMessage($victim."[".$this->getConfig()->get($victim[2])."] died.");
 			}
         		if($this->aplayers <= 1){ //if only 1 player is left
-        			foreach($this->getServer()->getLevel($this->getConfig()->get('aworld'))->getPlayers() as $p){ //detects the winner
+        			foreach($this->getServer()->getLevelByName($this->getConfig()->get('aworld'))->getPlayers() as $p){ //detects the winner
         				if($p->getGameMode() == 0){
         					$p->sendMessage("You won the match!");
         					$p->sendMessage("The game has finished, you will be teleported to the lobby.");
-        					$p->teleport($this->getServer()->getLevel($this->getConfig()->get('lobby'))->getSafeSpawn()); //teleport to the lobby
+        					$p->teleport($this->getServer()->getLevelByName($this->getConfig()->get('lobby'))->getSafeSpawn()); //teleport to the lobby
         					$points = $this->points->get($p)[2] + $this->config->get('points-per-match'); //get points and add
         					$deaths = $this->points->get($player)[0]; //get the victim's deaths, add one and store in a variable
        						$kills = $this->points->get($player)[1]; //get the players kills and store in a var
         					$this->config->set($p, array($deaths, $kills, $points));
         				}else{
         					$p->sendMessage("The match hs finished, thanks for watching.");
-        					$p->teleport($this->getServer()->getLevel($this->config->get('lobby'))->getSafeSpawn());
+        					$p->teleport($this->getServer()->getLevelByName($this->config->get('lobby'))->getSafeSpawn());
         					$p->setGameMode(0);
         				}
         				$this->stopGame($this->config->get('aworld')); //stop the game
@@ -369,7 +369,7 @@ public $inchestedit;
        		}else{
        			$deaths = $this->points->get($player)[0] + 1; //get the victim's deaths, add one and store in a variable
        			$kills = $this->points->get($player)[1]; //get the players kills and store in a var
-       			$points = $this->points->get($player)[2] - $this->config->get('points-per-death'); //get the player points
+       			$points = $this->points->get($player)[2] - $this->getConfig()->get('points-per-death'); //get the player points
         		$this->points->set($player, array($deaths, $kills, $points)); //set the victim's actual deaths & kills
         	}
         	return true;
@@ -377,11 +377,11 @@ public $inchestedit;
 	
 	public function addKill($player){
 		if(!$this->points->exist($player)){ //if the name of the killer is not in the config
-        		$this->points->set($player, array(0, 1, $this->config->get('points-per-kill'))); //set the first kill
+        		$this->points->set($player, array(0, 1, $this->getConfig()->get('points-per-kill'))); //set the first kill
        		}else{
        			$deaths = $this->points->get($player)[0]; //get the killer's deaths
        			$kills = $this->points->get($player)[1] + 1; //get the players kills and store in a var
-       			$points = $this->points->get($player)[2] + $this->config->get('points-per-kill');
+       			$points = $this->points->get($player)[2] + $this->getConfig()->get('points-per-kill');
         		$this->points->set($player, array($deaths, $kills, $points)); //set the killer's actual deaths & kills
         	}
         	return true;
