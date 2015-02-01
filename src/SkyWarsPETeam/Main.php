@@ -233,7 +233,7 @@ private $aplayers = 0;
 			foreach($this->getServer()->getLevelByName($this->getConfig()->get('aworld'))->getPlayers() as $p){
 				$p->sendMessage("A player joined the game!");
 				$playersleft = $this->getConfig()->get('neededplayers') - $this->aplayers;
-				$p->sendMessage("Players left untill the game begin: ".$playersleft)
+				$p->sendMessage("Players left untill the game begin: ".$playersleft);
   			}
 		}
 	}
