@@ -26,6 +26,7 @@ use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
 use pocketmine\scheduler\PluginTask;
+use pocketmine\utils\Config;
 
 
 
