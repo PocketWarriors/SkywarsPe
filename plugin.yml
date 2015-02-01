@@ -10,11 +10,11 @@ commands:
  skywarshowto:
   description: "gives a brief tutorial on how to play skywars"
   usage: "/skywarshowto"
-  aliases: "skywars"
   permission: skywars.howto
  skywars:
   description: "the main skywars command"
   usage: "/skywars <play|exit>"
+  aliases: "sw"
 permissions:
  skywars:
   description: "Allows to access all sw features"
