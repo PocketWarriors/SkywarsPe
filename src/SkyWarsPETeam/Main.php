@@ -309,7 +309,7 @@ private $aplayers = 0;
         }
         
         public function onChat(PlayerChatEvent $event){
-        	$user = event->getPlayer->getName();
+        	$user = $event->getPlayer->getName();
         	if($this->config->get('chat-format') == true){
         		$event->setFormat("[".$this->points->get($user[2])."]<".$user.">: ".$event->getMessage());
         	}
