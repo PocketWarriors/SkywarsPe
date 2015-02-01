@@ -49,7 +49,6 @@ private $aplayers;
 	public function onDisable(){
         	$this->getConfig()->save();
         	$this->points->save();
-        	$this->chestitems->save();
         }
 	
 	public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
