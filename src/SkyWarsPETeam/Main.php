@@ -34,20 +34,16 @@ class Main extends PluginBase implements Listener{
 
 /*Thes are dynamics array, I used them to store some info like: configs, if the game is started and so on.
 They can be called using $this->name*/
-public $skywarsstarted = false;
-public $config;
-public $aplayers;
-public $inchestedit;
+private $skywarsstarted = false;
+private $config;
+private $aplayers;
 //public $bplayers;
 //public $cplayers;
 
 	public function onEnable(){
 		$this->getServer()->getPluginManager->registerEvents($this, $this);
-        	$this->getServer()->getScheduler()->scheduleRepeatingTask(new Timer($this), 1200); //this runs every second, but maybe will change in every minute
-        	//TODO: create a class for the timer
         	$this->saveDefaultConfig();
             	$this->points = new Config($this->getDataFolder()."points.yml", Config::YAML);
-            	//$this->chestitems = new config($this->getDataFolder()."chestitems.yml", Config::YAML);
 	}
 
 	public function onDisable(){
@@ -78,8 +74,7 @@ public $inchestedit;
 								$sender->sendMessage("The game is full"); // game full
 								return true;
 							}elseif($this->aplayers < $this->getConfig()->get('neededplayers') and $this->skywarsstarted == false){ //if player number is less than the max.
-								$n = $this->aplayers; //count the players and store in a variable
-								$spawn = $this->getConfig()->get('spawns')[$n]; //no need to do + 1 on this, because arrays start counting form 0 // get the correct spawn place
+								$spawn = $this->getConfig()->get('spawns')[$this->aplayers]; //no need to do + 1 on this, because arrays start counting form 0 // get the correct spawn place
 								$sender->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->getServer()->getLevelByName($this->getConfig()->get('aworld')))); //teleport to it
 								$this->aplayers = $this->aplayers + 1; //then add a player to the array
 								$sender->sendMessage("You have been teleported to the game world.");
@@ -200,22 +195,14 @@ public $inchestedit;
 							$sender->sendMessage("You will join a match as a spectator");
 							$sender->setGamemode(3); //Actually, this will crash mcpe I think.
 							$spawn = $this->getConfig()->get('spectatorspawn');
-							$sender->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->getServer()->getLevelbyName($this->getConfig()->get('aworld'))));
+							$sender->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->getServer()->getLevelByName($this->getConfig()->get('aworld'))));
 						}else{
 							$sender->sendMessage("You haven't the permission to run this command.");
 							return true;
 						}
 					break;
-/*					case "capturechest"
-					        if($sender->hasPermission("skywars.command.capturechest") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
-					                if($sender instanceof Player){
-					                $this->inchestedit[$sender->getName()] = true;
-					                            $sender->sendMessage("Touch a chest to capture contents.");
-					                }else{
-	                                                	    $sender->sendMessage("Please run command in game.");
-	                                                }
-	                                           return true;     
-					         }*/
+					default:
+						return false;
 				}
 				
 		}
@@ -262,8 +249,7 @@ public $inchestedit;
         				if($this->aplayers >= $this->getConfig()->get('neededplayers') and $this->skywarsstarted == false){ //if players in the world are more or equal as the max players
 						$player->sendMessage("The game is full"); // game full
 					}elseif($this->aplayers < $this->config->get('neededplayers') and $this->skywarsstarted == false){ //if player number is less than the max.
-						$n = $this->aplayers; //count the players and store in a variable
-						$spawn = $this->getConfig()->get('spawns')[$n]; //no need to do + 1 on this, because arrays start counting form 0 // get the correct spawn place
+						$spawn = $this->getConfig()->get('spawns')[$this->aplayers]; //no need to do + 1 on this, because arrays start counting form 0 // get the correct spawn place
 						$player->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->getServer()->getLevelByName($this->config->get('aworld')))); //teleport to it
 						$this->aplayers = $this->aplayers + 1; //then add a player to the array
 						$player->sendMessage("You have been teleported to the game world.")
@@ -332,7 +318,7 @@ public $inchestedit;
         
         
         /*Defining my function to start the game*/
-	public function startGame($level){
+	private function startGame($level){
 		$this->skywarsstarted == true; //put the array to true
 		foreach($this->getServer()->getLevelByName($level)->getPlayers() as $p){ //get every single player in the level
 			if($p->getGameMode() == 0){
@@ -347,7 +333,7 @@ public $inchestedit;
 		return true;
 	}
 	
-	public function stopGame($level){
+	private function stopGame($level){
 		$this->skywarsstarted == false; //put the array to false
 		$this->aplayers == 0; //restore players
 		$originalMap = $this->getConfig()->get('aworld');
@@ -356,14 +342,14 @@ public $inchestedit;
 		return true;
 	}
 	
-	public function extractWorld($zipPath, $worldName){
+	private function extractWorld($zipPath, $worldName){
     		$zip = new \ZipArchive;
     		$errId = $zip->open($zipPath); // TODO: if errored, check $errId
 		$zip->extractTo($this->getServer()->getDataPath() . "worlds/$worldName/");
     		$zip->close();
 	}
 	
-	public function addDeath($player){
+	private function addDeath($player){
 		if(!$this->points->exist($player)){ //if the name of the victim is not in the config
         		$this->points->set($player, array(1, 0, 0)); //set the first death
        		}else{
@@ -375,7 +361,7 @@ public $inchestedit;
         	return true;
 	}
 	
-	public function addKill($player){
+	private function addKill($player){
 		if(!$this->points->exist($player)){ //if the name of the killer is not in the config
         		$this->points->set($player, array(0, 1, $this->getConfig()->get('points-per-kill'))); //set the first kill
        		}else{
@@ -386,24 +372,5 @@ public $inchestedit;
         	}
         	return true;
 	}
-/*	public function onPlayerInteract2(PlayerInteractEvent $event, $pocketmineIgnoreMe = null){
-        	if(isset($this->inchestedit[$event->getPlayer()->getName()]); 	
-        	$ID = $event->getBlock->getID();
-        	if($ID = 54){
-        	if($tile instanceof chest){
-        	$chestpositon = $event->getBlock()->getLevel()->getTile(new Vector3($event->getBlock()->getX(),$event->getBlock()->getY(),$event->getBlock()->getZ(),$event->getPlayer()->getLevel()));
-        	$chestname = this->getChestname();
-        	$player->getInventory();
-        	$chestitems = $inventory->getHotbarSlotItemIDs($ItemIDs);
-        	if(!$this->chest->exist($chests)){
-        	$this->chestitems->set($chest, array($chestname, $chestposition, $chestitems));
-        	if($this->skywarsstarted = true;
-        	$this->chestitems->get($chests, array($chestname, $chestposition, $chestitems));
-        	$this->chests->set($chestitems);
-        	}else{
-         	$sender->sendMessage("[SkywarsPe] This chest is already in the skywars config file please choose another chest");
-        	}
-    		}	
-        	}
-	}*/
+
 }
