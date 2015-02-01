@@ -69,7 +69,8 @@ public $inchestedit;
         			}else{
         				$sender->sendMessage("You haven't the permission to run this command");
         			}
-			case "skywars": //will set aliases later in plugin.yml
+			case "skywars": 
+			case "sw":  //same as setting aliases in plugin.yml, both cmds (skywars & sw) are usable
 				switch($args[0]){
 					case "play":
 						if($sender->hasPermission("skywars.command.play") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
