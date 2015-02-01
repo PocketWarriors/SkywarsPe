@@ -47,7 +47,7 @@ public $inchestedit;
         	//TODO: create a class for the timer
         	$this->saveDefaultConfig();
             	$this->points = new Config($this->getDataFolder()."points.yml", Config::YAML);
-            	$this->chestitems = new config($this->getDataFolder()."chestitems.yml", Config::YAML);
+            	//$this->chestitems = new config($this->getDataFolder()."chestitems.yml", Config::YAML);
 	}
 
 	public function onDisable(){
@@ -211,14 +211,13 @@ public $inchestedit;
 					                if($sender instanceof Player){
 					                $this->inchestedit[$sender->getName()] = true;
 					                            $sender->sendMessage("Touch a chest to capture contents.");
-					                }
-	                                                else{
+					                }else{
 	                                                	    $sender->sendMessage("Please run command in game.");
 	                                                }
 	                                           return true;     
-					           }
-					        }
+					         }
 				}
+				
 		}
 	}
 	
@@ -387,7 +386,7 @@ public $inchestedit;
         	}
         	return true;
 	}
-	public function onPlayerInteract2(PlayerInteractEvent $event, $pocketmineIgnoreMe = null){
+/*	public function onPlayerInteract2(PlayerInteractEvent $event, $pocketmineIgnoreMe = null){
         	if(isset($this->inchestedit[$event->getPlayer()->getName()]); 	
         	$ID = $event->getBlock->getID();
         	if($ID = 54){
@@ -406,5 +405,5 @@ public $inchestedit;
         	}
     		}	
         	}
-	}
+	}*/
 }
