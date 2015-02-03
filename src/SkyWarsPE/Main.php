@@ -163,8 +163,8 @@ private $aplayers = 0;
 					break;
 					case "skiptime":
 						if($sender->hasPermission("skywars.command.skiptime") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
-							if($this->aplayers > 3){ //if the players in the array are more than 3
-								$this->startGame($sender->getLevel()); //start game on the sender level
+							if($this->aplayers >= $this->getConfig()->get("minplayers")){
+								$this->startGame($sender->getLevel()->getName()); //start game on the sender level
 								$sender->sendMessage("You started the game skipping the waiting time!");
 								return true;
 							}else{
