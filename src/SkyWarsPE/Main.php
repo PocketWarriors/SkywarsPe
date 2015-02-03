@@ -204,6 +204,7 @@ private $aplayers = 0;
 					break;
 					default:
 						return false;
+					break;
 				}
 				
 		}
