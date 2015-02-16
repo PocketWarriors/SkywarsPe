@@ -38,10 +38,12 @@ They can be called using $this->name*/
 private $skywarsstarted = false;
 private $points;
 private $aplayers = 0;
+private $permission = TextFormat::RED."You don't have permission for this!"; //permission message
 //public $bplayers;
 //public $cplayers;
 
 	public function onEnable(){
+		@mkdir($this->getDataFolder());
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
         	$this->saveDefaultConfig();
             	$this->points = new Config($this->getDataFolder()."points.yml", Config::YAML);
@@ -63,7 +65,7 @@ private $aplayers = 0;
 					$sender->sendMessage("/sk skiptime = skip the waiting time");
 					return true;
         			}else{
-        				$sender->sendMessage("You haven't the permission to run this command");
+        				$sender->sendMessage($this->permission);
         			}
 			case "skywars": 
 			case "sw":  //same as setting aliases in plugin.yml, both cmds (skywars & sw) are usable
@@ -88,11 +90,12 @@ private $aplayers = 0;
                         					return true;
                         				}
 						}else{
-							$sender->sendMessage("You haven't the permission to run this command.");
+							$sender->sendMessage($this->permission);
 							return true;
 						}
 					break;
 					case "exit":
+						$cfg = $this->getConfig()->getAll();
 						if($sender->hasPermission("skywars.command.exit") or $sender->hasPermission("skywars.command") or $sender->hasPermission("skywars")){
 							if($sender->getLevel()->getName() == $this->getConfig()->get('aworld')){ //if the level of the sender is a skywars one
 								$this->aplayers = $this->aplayers - 1; //remove 1 to the array
@@ -103,14 +106,14 @@ private $aplayers = 0;
         									if($p->getGameMode() == 0){
         										$p->sendMessage("You won the match!");
         										$p->sendMessage("The game has finished, you will be teleported to the lobby.");
-        										$p->teleport($this->getServer()->getLevelByName($this->config->get('lobby'))->getSafeSpawn()); //teleport to the lobby
+        										$p->teleport(new Position($cfg["lobby"]["x"],$cfg["lobby"]["y"],$cfg["lobby"]["z"],$this->getServer()->getLevelByName($cfg["lobby"]["world"]))); //teleport to the lobby
         										$points = $this->points->get($p)[2] + $this->getConfig()->get('points-per-match'); //get points and add
         										$deaths = $this->points->get($player)[0]; //get the victim's deaths, add one and store in a variable
        											$kills = $this->points->get($player)[1]; //get the players kills and store in a var
         										$this->getConfig()->set($p, array($deaths, $kills, $points));
         									}else{
         										$p->sendMessage("The match has finished, thanks for watching.");
-        										$p->teleport($this->getServer()->getLevelByName($this->getConfig()->get('lobby'))->getSafeSpawn());
+        										$p->teleport(new Position($cfg["lobby"]["x"],$cfg["lobby"]["y"],$cfg["lobby"]["z"],$this->getServer()->getLevelByName($cfg["lobby"]["world"])));
         										$p->setGameMode(0);
         									}
         										$this->stopGame($this->getConfig()->get('aworld')); //stop the game
@@ -122,7 +125,7 @@ private $aplayers = 0;
 								return true;
 							}
 						}else{
-							$sender->sendMessage("You haven't the permission to run this command.");
+							$sender->sendMessage($this->permission);
 							return true;
 						}
 					break;
@@ -144,7 +147,7 @@ private $aplayers = 0;
 								return true;
                                         		}
                                 		}else{
-                               	        		$sender->sendMessage("You haven't the permission to run this command.");
+                               	        		$sender->sendMessage($this->permission);
 							return true;
                                	        	}  
 					break;
@@ -157,7 +160,7 @@ private $aplayers = 0;
 							$sender->sendMessage("Spawn position set to: ".$x.", ".$y.", ".$z.", level: ".$sender->getLevel()->getName());
 							return true;
 						}else{
-							$sender->sendMessage("You haven't the permission to run this command.");
+							$sender->sendMessage($this->permission);
 							return true;
 						}
 					break;
@@ -172,7 +175,7 @@ private $aplayers = 0;
 								return true;
 							}
 						}else{
-							$sender->sendMessage("You haven't the permission to run this command.");
+							$sender->sendMessage($this->permission);
 							return true;
 						}
 					break;
@@ -187,7 +190,7 @@ private $aplayers = 0;
 								return true;
 							}
 						}else{
-							$sender->sendMessage("You haven't the permission to run this command.");
+							$sender->sendMessage($this->permission);
 							return true;
 						}
 					break;
@@ -198,12 +201,27 @@ private $aplayers = 0;
 							$spawn = $this->getConfig()->get('spectatorspawn');
 							$sender->teleport(new Position($spawn[0], $spawn[1], $spawn[2], $this->getServer()->getLevelByName($this->getConfig()->get('aworld'))));
 						}else{
-							$sender->sendMessage("You haven't the permission to run this command.");
+							$sender->sendMessage($this->permission);
+							return true;
+						}
+					break;
+					case "setlobby":
+						if($sender->hasPermission("skywars.command.setlobby") || $sender->hasPermission("skywars.command") || $sender->hasPermission("skywars")){
+							if($sender instacneof Player){
+								$this->setLobby($sender);
+								$sender->sendMessage("You set the main lobby of the server.");
+							}else{
+								$sender->sendMessage("Command only works in-game!");
+								return true;
+							}
+						}else{
+							$sender->sendMessage($this->permission);
 							return true;
 						}
 					break;
 					default:
-						return false;
+						return false
+						break;
 				}
 				
 		}
@@ -212,14 +230,16 @@ private $aplayers = 0;
 
 	
 	public function onBlockBreak(BlockBreakEvent $event){
-		if($event->getPlayer()->getLevel()->getName() == $this->getConfig()->get('lobby') and !$event->getPlayer()->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){ //if level is lobby and player hasn't the permission to modify it
+		$cfg = $this->getConfig()->getAll();
+		if($event->getPlayer()->getLevel()->getName() == $cfg["lobby"]["world"] and !$event->getPlayer()->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){ //if level is lobby and player hasn't the permission to modify it
 			$event->setCancelled(); // cancel the event
 			$event->getPlayer()->sendMessage("You don't have permission to edit the lobby.");
 		}
 	}
 	
 	public function onBlockPlace(BlockPlaceEvent $event){
-		if($event->getPlayer()->getLevel()->getName() == $this->getConfig()->get('lobby') and !$event->getPlayer()->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){
+		$cfg = $this->getConfig()->getAll();
+		if($event->getPlayer()->getLevel()->getName() == $cfg["lobby"]["world"] and !$event->getPlayer()->hasPermission("skywars.editlobby") || !$event->getPlayer()->hasPermission("skywars")){
 			$event->setCancelled();
 			$event->getPlayer()->sendMessage("You don't have permission to edit the lobby.");
 		}
@@ -292,14 +312,14 @@ private $aplayers = 0;
         				if($p->getGameMode() == 0){
         					$p->sendMessage("You won the match!");
         					$p->sendMessage("The game has finished, you will be teleported to the lobby.");
-        					$p->teleport($this->getServer()->getLevelByName($this->getConfig()->get('lobby'))->getSafeSpawn()); //teleport to the lobby
+        					$p->teleport(new Position($cfg["lobby"]["x"],$cfg["lobby"]["y"],$cfg["lobby"]["z"],$this->getServer()->getLevelByName($cfg["lobby"]["world"]))); //teleport to the lobby
         					$points = $this->points->get($p)[2] + $this->config->get('points-per-match'); //get points and add
         					$deaths = $this->points->get($player)[0]; //get the victim's deaths, add one and store in a variable
        						$kills = $this->points->get($player)[1]; //get the players kills and store in a var
         					$this->config->set($p, array($deaths, $kills, $points));
         				}else{
         					$p->sendMessage("The match hs finished, thanks for watching.");
-        					$p->teleport($this->getServer()->getLevelByName($this->config->get('lobby'))->getSafeSpawn());
+        					$p->teleport(new Position($cfg["lobby"]["x"],$cfg["lobby"]["y"],$cfg["lobby"]["z"],$this->getServer()->getLevelByName($cfg["lobby"]["world"])));
         					$p->setGameMode(0);
         				}
         				$this->stopGame($this->config->get('aworld')); //stop the game
@@ -370,6 +390,16 @@ private $aplayers = 0;
         		$this->points->set($player, array($deaths, $kills, $points)); //set the killer's actual deaths & kills
         	}
         	return true;
+	}
+	
+	public function setLobby(Player $player){
+		$cfg = $this->getConfig()->getAll();
+		$cfg["lobby"]["x"] = floor($player->x);
+		$cfg["lobby"]["y"] = floor($player->y);
+		$cfg["lobby"]["z"] = floor($player->z);
+		$cfg["lobby"]["world"] = $player->getLevel()->getName();
+		$this->getConfig()->setAll();
+		$this->getConfig()->save();
 	}
 
 }
