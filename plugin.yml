@@ -1,7 +1,7 @@
 name: SkyWarsPE
 main: SkyWarsPE\Main
-version: 1.0.0beta
-api: [1.10.0]
+version: 2.1.0beta
+api: [1.13.0]
 load: POSTWORLD
 authors: [SkywarsPe Team(luca28pet, WantedKillers, Jon)]
 website: https://github.com/PocketWarriors/SkywarsPe
